@@ -7,7 +7,7 @@
   via any medium is strictly prohibited. This code is confidential.
 --]]
 
-local prefix = "1ZONE"
+local prefix = "^1ZONE"
 SZonesManager = {}
 SZonesManager.list = {}
 

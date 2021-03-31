@@ -15,4 +15,5 @@ end
 
 TriggerEvent("esx:getSharedObject", function(obj)
     ESX = obj
+    TriggerEvent("onore_esxloaded")
 end)

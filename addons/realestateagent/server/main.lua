@@ -1,0 +1,2 @@
+TriggerEvent('esx_phone:registerNumber', 'realestateagent', "clients", false, false)
+TriggerEvent('esx_society:registerSociety', 'realestateagent', "Agence Immobilière", 'society_realestateagent', 'society_realestateagent', 'society_realestateagent', {type = 'private'})

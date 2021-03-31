@@ -13,10 +13,13 @@ game 'gta5'
 
 shared_scripts {
     "shared/*.lua",
+    "modules/**/shared/*.lua",
+    "addons/**/shared/*.lua"
 }
 
 client_scripts {
-    "client/*.lua",
+    "client/jobList.lua",
+    "client/main.lua",
 
     "modules/**/client/*.lua",
     "modules/**/client/objects/*.lua",

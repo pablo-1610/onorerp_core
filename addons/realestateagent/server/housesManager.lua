@@ -6,7 +6,7 @@
   Unauthorized using, copying, modifying and/or distributing of this file,
   via any medium is strictly prohibited. This code is confidential.
 --]]
-
+local prefix = "^3HOUSES"
 HousesManager = {}
 
 HousesManager.instanceRange = 1000
@@ -14,7 +14,7 @@ HousesManager.instanceRange = 1000
 HousesManager.list = {}
 
 local function addHouse(infos)
-    local house = House(infos.id, infos.owner, infos.zonesInfos)
+    local house = House(infos.id, infos.owner, json.decode(infos.zonesInfos))
     HousesManager.list[house.houseId] = house
 end
 
@@ -25,7 +25,7 @@ local function loadHouses()
             tot = tot + 1
             addHouse(infos)
         end
-        print(("[^1Onore^7] (^3HOUSES^7) Loaded ^2%i ^7houses !"):format(tot))
+        print(Onore.prefix(prefix,("%i maisons importées depuis la db"):format(tot)))
     end)
 end
 
