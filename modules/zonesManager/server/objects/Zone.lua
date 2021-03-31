@@ -42,7 +42,7 @@ setmetatable(Zone, {
 ---@public
 ---@return void
 function Zone:interact(source)
-    self.onEnter(source)
+    self.onInteract(source)
 end
 
 ---setRestriction
