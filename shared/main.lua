@@ -8,3 +8,6 @@
 --]]
 
 Onore = {}
+Job = nil
+Jobs = {}
+Jobs.list = {}

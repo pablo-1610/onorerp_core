@@ -3,7 +3,7 @@ local sub = function(str) return cat.."_"..str  end
 Jobs.list["realestateagent"].openMenu = function()
     if menuIsOpened then return end
     menuIsOpened = true
-    RMenu.Add(cat, sub("main"), RageUI.CreateMenu("Agence immobilière", "~g~Menu des interactions", nil, nil, "root_cause", "shopui_title_dynasty8"))
+    RMenu.Add(cat, sub("main"), RageUI.CreateMenu(nil, "~g~Menu des interactions", nil, nil, "root_cause", "shopui_title_dynasty8"))
     RageUI.Visible(RMenu:Get(cat, sub("main")), true)
     Citizen.CreateThread(function()
         while menuIsOpened and Job.name:lower() == cat do

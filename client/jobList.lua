@@ -1,7 +1,3 @@
-Job = nil
-Jobs = {}
-Jobs.list = {}
-
 local avaibleJobs = {
     "realestateagent"
 }
@@ -18,7 +14,7 @@ AddEventHandler("onore_esxloaded", function()
                     Jobs.list[Job.name].openMenu()
                 end
             end
-            Wait(1)
+            Wait(0)
         end
     end)
 end)
