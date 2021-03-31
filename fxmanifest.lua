@@ -21,6 +21,8 @@ client_scripts {
     "client/jobList.lua",
     "client/main.lua",
 
+    "client/utils/*.lua",
+
     "modules/**/client/*.lua",
     "modules/**/client/objects/*.lua",
 
