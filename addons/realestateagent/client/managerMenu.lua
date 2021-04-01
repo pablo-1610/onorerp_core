@@ -50,6 +50,8 @@ AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(online
                 RageUI.Separator("↓ ~g~Gestion de la propriétée ~s~↓")
                 RageUI.ButtonWithStyle("Liste des autorisations", nil, { RightLabel = "→→" }, true, function(_, _, s)
                 end, RMenu:Get(cat, sub("invite")))
+                RageUI.ButtonWithStyle("Coffre fort", "~y~Cette fonctionalité sera disponible dès le 03/24/2020", { RightLabel = "→→" }, false, function(_, _, s)
+                end, RMenu:Get(cat, sub("invite")))
             end, function()
             end)
             RageUI.IsVisible(RMenu:Get(cat, sub("invite")), true, true, true, function()
