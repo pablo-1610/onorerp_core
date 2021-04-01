@@ -11,6 +11,7 @@ local previousPos, currentlyVisiting, cat, desc, visitingBucket = nil, false, "r
 local sub = function(str)
     return cat .. "_" .. str
 end
+local announce = false
 local builder = { name = nil, price = nil, entry = nil, selectedInterior = 1 }
 Jobs.list["realestateagent"].openMenu = function()
     if menuIsOpened then
@@ -102,12 +103,17 @@ Jobs.list["realestateagent"].openMenu = function()
                     end)
                 end
                 RageUI.Separator("↓ ~r~Interactions ~s~↓")
+                RageUI.Checkbox("~g~Annoncer la mise en vente", nil, announce, { Style = RageUI.CheckboxStyle.Tick }, function(Hovered, Selected, Active, Checked)
+                    announce = Checked
+                end, function()
+                end, function()
+                end)
                 RageUI.ButtonWithStyle("~g~Valider et sauvegarder", nil, {RightLabel = "→→"}, builder.name ~= nil and builder.name ~= "" and builder.entry ~= nil and builder.price ~= nil and tonumber(builder.price) >= 1 and not currentlyVisiting, function(_,_,s)
                     if s then
                         local plyPos = GetEntityCoords(PlayerPedId())
                         local streetHash = Citizen.InvokeNative(0x2EB41072B4C1E4C0, plyPos.x, plyPos.y, plyPos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
                         local street = GetStreetNameFromHashKey(streetHash)
-                        TriggerServerEvent("onore_realestateagent:saveProperty", builder, street)
+                        TriggerServerEvent("onore_realestateagent:saveProperty", builder, street, announce)
                         ESX.ShowNotification("~o~Création de la propriétée en cours...")
                         shouldStayOpened = false
                     end

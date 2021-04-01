@@ -34,7 +34,7 @@ local function loadHouses()
     end)
 end
 
-local function createHouse(data, author, street)
+local function createHouse(data, author, street, announce)
     MySQL.Async.insert("INSERT INTO onore_houses (owner, ownerInfo, infos, inventory, createdAt, createdBy, street) VALUES(@a, @b, @c, @d, @e, @f, @g)", {
         ['a'] = "none",
         ['b'] = "none",
@@ -47,7 +47,7 @@ local function createHouse(data, author, street)
         addHouse({ id = insertId, owner = "none", infos = data, ownerInfo = "none", inventory = {}, street }, false)
         TriggerClientEvent("onore_realestateagent:addAvailableHouse", -1, { id = insertId, coords = data.entry })
         TriggerClientEvent("esx:showNotification", author, "~g~Création de la propriétée effectuée !")
-        TriggerClientEvent("onore_utils:advancedNotif", -1, "~y~Agence immobilière", "~b~Nouvelle propriétée", ("Une nouvelle propriétée est disponible à ~p~%s ~s~pour la somme de ~g~%s$"):format(street, ESX.Math.GroupDigits(tonumber(data.price))), "CHAR_MINOTAUR", 1)
+        if announce then TriggerClientEvent("onore_utils:advancedNotif", -1, "~y~Agence immobilière", "~b~Nouvelle propriétée", ("Une nouvelle propriétée est disponible à ~p~%s ~s~pour la somme de ~g~%s$"):format(street, ESX.Math.GroupDigits(tonumber(data.price))), "CHAR_MINOTAUR", 1) end
     end)
 end
 
@@ -70,10 +70,10 @@ AddEventHandler("onore_realestateagent:openPropertyMenu", function(source, prope
 end)
 
 RegisterNetEvent("onore_realestateagent:saveProperty")
-AddEventHandler("onore_realestateagent:saveProperty", function(info, street)
+AddEventHandler("onore_realestateagent:saveProperty", function(info, street, announce)
     -- TODO -> (AntiCheat) Check le job de la source
     local source = source
-    createHouse(info, source, street)
+    createHouse(info, source, street, announce)
 end)
 
 RegisterNetEvent("onore_realestateagent:enterHouse")

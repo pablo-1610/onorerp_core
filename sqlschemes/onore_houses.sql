@@ -6,7 +6,8 @@ CREATE TABLE `onore_houses` (
   `infos` text NOT NULL,
   `inventory` text NOT NULL,
   `createdAt` text NOT NULL,
-  `createdBy` varchar(80) NOT NULL
+  `createdBy` varchar(80) NOT NULL,
+  `street` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 ALTER TABLE `onore_houses`
