@@ -8,7 +8,8 @@
 --]]
 
 OnorePrefixes = {
-    house = "^3HOUSES"
+    house = "^3HOUSES",
+    zones = "^1ZONE"
 }
 OnoreServerUtils = {}
 

@@ -7,7 +7,6 @@
   via any medium is strictly prohibited. This code is confidential.
 --]]
 
-local prefix = "^1ZONE"
 SZonesManager = {}
 SZonesManager.list = {}
 
@@ -37,7 +36,7 @@ SZonesManager.addAllowed = function(zoneID, playerId)
     ---@type Zone
     local zone = SZonesManager.list[zoneID]
     if zone:isAllowed(playerId) then
-        print(Onore.prefix(prefix,("Tentative d'ajouter l'ID %s à la zone %s alors qu'il est déjà autorisé"):format(playerId,zoneID)))
+        print(Onore.prefix(OnorePrefixes.zones,("Tentative d'ajouter l'ID %s à la zone %s alors qu'il est déjà autorisé"):format(playerId,zoneID)))
         return
     end
     zone:addAllowed(playerId)
@@ -53,7 +52,7 @@ SZonesManager.removeAllowed = function(zoneID, playerId)
     ---@type Zone
     local zone = SZonesManager.list[zoneID]
     if not zone:isAllowed(playerId) then
-        print(Onore.prefix(prefix,("Tentative de supprimer l'ID %s à la zone %s alors qu'il n'est déjà pas autorisé"):format(playerId,zoneID)))
+        print(Onore.prefix(OnorePrefixes.zones,("Tentative de supprimer l'ID %s à la zone %s alors qu'il n'est déjà pas autorisé"):format(playerId,zoneID)))
         return
     end
     zone:removeAllowed(playerId)
@@ -161,7 +160,7 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        Wait(8000)
+        Wait(30000)
         local restrictedZones = 0
         ---@param zone Zone
         for _,zone in pairs(SZonesManager.list) do
@@ -169,6 +168,6 @@ Citizen.CreateThread(function()
                 restrictedZones = restrictedZones + 1
             end
         end
-        print(Onore.prefix(prefix, ("Il y a %i zones actives (dont %i restricted)"):format(#SZonesManager.list, restrictedZones)))
+        print(Onore.prefix(OnorePrefixes.zones, ("Il y a %i zones actives (dont %i restricted)"):format(#SZonesManager.list, restrictedZones)))
     end
 end)

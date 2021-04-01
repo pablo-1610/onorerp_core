@@ -15,9 +15,9 @@ HousesManager.list = {}
 local function addHouse(info, needDecode)
     local house
     if needDecode then
-        house = House(info.id, info.owner, json.decode(info.infos), info.ownerInfo)
+        house = House(info.id, info.owner, json.decode(info.infos), info.ownerInfo, json.decode(info.inventory))
     else
-        house = House(info.id, info.owner, info.infos, info.ownerInfo)
+        house = House(info.id, info.owner, info.infos, info.ownerInfo, info.inventory)
     end
     house:initMarker()
     HousesManager.list[house.houseId] = house
@@ -35,12 +35,15 @@ local function loadHouses()
 end
 
 local function createHouse(data, author, street)
-    MySQL.Async.insert("INSERT INTO onore_houses (owner, infos, createdAt) VALUES(@a, @b, @c)", {
+    MySQL.Async.insert("INSERT INTO onore_houses (owner, ownerInfo, infos, inventory, createdAt, createdBy) VALUES(@a, @b, @c, @d, @e, @f)", {
         ['a'] = "none",
-        ['b'] = json.encode(data),
-        ['c'] = os.time()
+        ['b'] = "none",
+        ['c'] = json.encode(data),
+        ['d'] = json.encode({}),
+        ['e'] = os.time(),
+        ['f'] = OnoreServerUtils.getLicense(author)
     }, function(insertId)
-        addHouse({ id = insertId, owner = "none", infos = data, ownerInfo = "none" }, false)
+        addHouse({ id = insertId, owner = "none", infos = data, ownerInfo = "none", inventory = {} }, false)
         TriggerClientEvent("onore_realestateagent:addAvailableHouse", -1, { id = insertId, coords = data.entry })
         TriggerClientEvent("esx:showNotification", author, "~g~Création de la propriétée effectuée !")
         TriggerClientEvent("onore_utils:advancedNotif", -1, "~y~Agence immobilière", "~b~Nouvelle propriétée", ("Une nouvelle propriétée est disponible à ~p~%s ~s~pour la somme de ~g~%s$"):format(street, ESX.Math.GroupDigits(tonumber(data.price))), "CHAR_MINOTAUR", 1)
@@ -95,7 +98,6 @@ AddEventHandler("onore_realestateagent:buyProperty", function(houseId)
     if bank >= price then
         xPlayer.removeAccountMoney("bank", price)
         local license = OnoreServerUtils.getLicense(source)
-        print(license)
         MySQL.Async.fetchAll("SELECT * FROM users WHERE license = @a", {
             ['a'] = license
         }, function(res)
