@@ -55,6 +55,11 @@ AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(online
             RageUI.IsVisible(RMenu:Get(cat, sub("invite")), true, true, true, function()
                 tick()
                 RageUI.Separator("↓ ~g~Gestion des autorisations ~s~↓")
+                RageUI.ButtonWithStyle("Appliquer les autorisations", nil, { RightLabel = "→→" }, true, function(_, _, s)
+                    if s then
+                        RageUI.GoBack()
+                    end
+                end)
                 RageUI.Separator("↓ ~y~Autorisations ~s~↓")
                 if #onlinePlayers <= 0 then
                     RageUI.Separator("")
@@ -63,7 +68,7 @@ AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(online
                 else
                     for k, v in pairs(onlinePlayers) do
                         RageUI.Checkbox(("~o~%s ~s~→ ~y~%s"):format(k, v.name), nil, allowedPlayers[v.license] ~= nil, { Style = RageUI.CheckboxStyle.Tick }, function(Hovered, Selected, Active, Checked)
-                            allowedPlayers[v.license] = Checked;
+
                         end, function()
 
                         end, function()
