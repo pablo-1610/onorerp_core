@@ -15,10 +15,11 @@ SZonesManager.createPublic = function(location, type, color, onInteract, helpTex
     local zone = Zone(location, type, color, onInteract, helpText, drawDist, itrDist, false)
     local marker = { id = zone.zoneID, type = zone.type, color = zone.color, help = zone.helpText, position = zone.location, distances = { zone.drawDist, zone.itrDist } }
     TriggerClientEvent("onore_zones:newMarker", -1, marker)
+    return zone.zoneID
 end
 
 SZonesManager.createPrivate = function(location, type, color, onInteract, helpText, drawDist, itrDist, baseAllowed)
-    local zone = Zone(location, type, color, onInteract, helpText, drawDist, itrDist, false, baseAllowed)
+    local zone = Zone(location, type, color, onInteract, helpText, drawDist, itrDist, true, baseAllowed)
     local marker = { id = zone.zoneID, type = zone.type, color = zone.color, help = zone.helpText, position = zone.location, distances = { zone.drawDist, zone.itrDist } }
     local players = ESX.GetPlayers()
     for k, v in pairs(players) do
@@ -26,6 +27,7 @@ SZonesManager.createPrivate = function(location, type, color, onInteract, helpTe
             TriggerClientEvent("onore_zones:newMarker", v, marker)
         end
     end
+    return zone.zoneID
 end
 
 SZonesManager.addAllowed = function(zoneID, playerId)

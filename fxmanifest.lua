@@ -43,6 +43,7 @@ client_scripts {
 server_scripts {
     "@mysql-async/lib/MySQL.lua",
     "server/*.lua",
+    "server/utils/*.lua",
 
     "modules/**/server/*.lua",
     "modules/**/server/objects/*.lua",

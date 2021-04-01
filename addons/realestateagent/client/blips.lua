@@ -45,6 +45,15 @@ AddEventHandler("onore_realestateagent:addAvailableHouse", function(availableHou
     blips[availableHouse.id] = blip
 end)
 
+RegisterNetEvent("onore_realestateagent:houseNoLongerAvailable")
+AddEventHandler("onore_realestateagent:houseNoLongerAvailable", function(houseID)
+    if not blips[houseID] or not DoesBlipExist(blips[houseID]) then
+        return
+    end
+    RemoveBlip(blips[houseID])
+    blips[houseID] = nil
+end)
+
 AddEventHandler("onore_esxloaded", function()
     TriggerServerEvent("onore_realestateagent:requestAvailableHouses")
 end)

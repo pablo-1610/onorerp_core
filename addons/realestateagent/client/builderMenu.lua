@@ -104,7 +104,10 @@ Jobs.list["realestateagent"].openMenu = function()
                 RageUI.Separator("↓ ~r~Interactions ~s~↓")
                 RageUI.ButtonWithStyle("~g~Valider et sauvegarder", nil, {RightLabel = "→→"}, builder.name ~= nil and builder.name ~= "" and builder.entry ~= nil and builder.price ~= nil and tonumber(builder.price) >= 1 and not currentlyVisiting, function(_,_,s)
                     if s then
-                        TriggerServerEvent("onore_realestateagent:saveProperty", builder)
+                        local plyPos = GetEntityCoords(PlayerPedId())
+                        local streetHash = Citizen.InvokeNative(0x2EB41072B4C1E4C0, plyPos.x, plyPos.y, plyPos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+                        local street = GetStreetNameFromHashKey(streetHash)
+                        TriggerServerEvent("onore_realestateagent:saveProperty", builder, street)
                         ESX.ShowNotification("~o~Création de la propriétée en cours...")
                         shouldStayOpened = false
                     end
