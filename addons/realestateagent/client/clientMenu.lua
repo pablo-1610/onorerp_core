@@ -7,17 +7,18 @@
   via any medium is strictly prohibited. This code is confidential.
 --]]
 
+tpAnim = false
 local cat, desc = "realestateagentclient", "~g~Interaction avec la propriétée"
 local sub = function(str)
     return cat .. "_" .. str
 end
 
 RegisterNetEvent("onore_realestateagent:openClientPropertyMenu")
-AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, info)
+AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, info, license)
     local plyPos = GetEntityCoords(PlayerPedId())
     local streetHash = Citizen.InvokeNative(0x2EB41072B4C1E4C0, plyPos.x, plyPos.y, plyPos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
     local street = GetStreetNameFromHashKey(streetHash)
-    if menuIsOpened then
+    if menuIsOpened or tpAnim then
         return
     end
     local cVar = "~y~"
@@ -62,6 +63,20 @@ AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, 
                         end
                     end)
                 else
+                    -- Maison du joueur
+                    if owner == license then
+                        RageUI.Separator("~g~Cette propriétée vous appartient")
+                        RageUI.Separator(("%s↓ ~g~Interactions %s↓"):format(cVar, cVar))
+                        RageUI.ButtonWithStyle("Entrer dans votre propriétée", nil, {RightLabel = "→→"}, true, function(_,_,s)
+                            if s then
+                                enteringHouse = true
+                                TriggerServerEvent("onore_realestateagent:enterHouse", info[3])
+                                shouldStayOpened = false
+                            end
+                        end)
+                    else
+                        RageUI.Separator(("~g~Propriétaire~s~: ~y~%s"):format(info[4]))
+                    end
                 end
             end, function()
             end)

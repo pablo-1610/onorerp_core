@@ -7,34 +7,51 @@
   via any medium is strictly prohibited. This code is confidential.
 --]]
 
-local blips = {}
+local availableHouses = {}
+local ownedHouses = {}
 
 RegisterNetEvent("onore_realestateagent:cbAvailableHouses")
-AddEventHandler("onore_realestateagent:cbAvailableHouses", function(availableHouses)
-    for _, blip in pairs(blips) do
+AddEventHandler("onore_realestateagent:cbAvailableHouses", function(available, owned)
+    for _, blip in pairs(available) do
         if DoesBlipExist(blip) then
             RemoveBlip(blip)
         end
     end
-    for houseID, coordinates in pairs(availableHouses) do
+    for _, blip in pairs(ownedHouses) do
+        if DoesBlipExist(blip) then
+            RemoveBlip(blip)
+        end
+    end
+    for houseID, coordinates in pairs(available) do
         local blip = AddBlipForCoord(coordinates.x, coordinates.y, coordinates.z)
         SetBlipSprite(blip, 374)
         SetBlipColour(blip, 69)
         SetBlipAsShortRange(blip, true)
         SetBlipScale(blip, 0.8)
         BeginTextCommandSetBlipName("STRING")
-        AddTextComponentString("Maison à vendre")
+        AddTextComponentString("Propriétée en vente")
         EndTextCommandSetBlipName(blip)
-        blips[houseID] = blip
+        availableHouses[houseID] = blip
+    end
+    for houseID, coordinates in pairs(owned) do
+        local blip = AddBlipForCoord(coordinates.x, coordinates.y, coordinates.z)
+        SetBlipSprite(blip, 492)
+        SetBlipColour(blip, 11)
+        SetBlipAsShortRange(blip, false)
+        SetBlipScale(blip, 1.0)
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentString("Propriétée acquise")
+        EndTextCommandSetBlipName(blip)
+        ownedHouses[houseID] = blip
     end
 end)
 
 RegisterNetEvent("onore_realestateagent:addAvailableHouse")
-AddEventHandler("onore_realestateagent:addAvailableHouse", function(availableHouse)
-    if blips[availableHouse.id] then
+AddEventHandler("onore_realestateagent:addAvailableHouse", function(available)
+    if availableHouses[available.id] then
         return
     end
-    local blip = AddBlipForCoord(availableHouse.coords.x, availableHouse.coords.y, availableHouse.coords.z)
+    local blip = AddBlipForCoord(available.coords.x, available.coords.y, available.coords.z)
     SetBlipSprite(blip, 374)
     SetBlipColour(blip, 69)
     SetBlipAsShortRange(blip, true)
@@ -42,16 +59,32 @@ AddEventHandler("onore_realestateagent:addAvailableHouse", function(availableHou
     BeginTextCommandSetBlipName("STRING")
     AddTextComponentString("Maison à vendre")
     EndTextCommandSetBlipName(blip)
-    blips[availableHouse.id] = blip
+    availableHouses[available.id] = blip
+end)
+
+RegisterNetEvent("onore_realestateagent:addOwnedHouse")
+AddEventHandler("onore_realestateagent:addOwnedHouse", function(owned)
+    if ownedHouses[owned.id] then
+        return
+    end
+    local blip = AddBlipForCoord(owned.coords.x, owned.coords.y, owned.coords.z)
+    SetBlipSprite(blip, 492)
+    SetBlipColour(blip, 11)
+    SetBlipAsShortRange(blip, false)
+    SetBlipScale(blip, 1.0)
+    BeginTextCommandSetBlipName("STRING")
+    AddTextComponentString("Propriétée acquise")
+    EndTextCommandSetBlipName(blip)
+    ownedHouses[houseID] = blip
 end)
 
 RegisterNetEvent("onore_realestateagent:houseNoLongerAvailable")
 AddEventHandler("onore_realestateagent:houseNoLongerAvailable", function(houseID)
-    if not blips[houseID] or not DoesBlipExist(blips[houseID]) then
+    if not availableHouses[houseID] or not DoesBlipExist(availableHouses[houseID]) then
         return
     end
-    RemoveBlip(blips[houseID])
-    blips[houseID] = nil
+    RemoveBlip(availableHouses[houseID])
+    availableHouses[houseID] = nil
 end)
 
 AddEventHandler("onore_esxloaded", function()

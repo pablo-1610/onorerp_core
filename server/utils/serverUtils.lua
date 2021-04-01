@@ -7,6 +7,9 @@
   via any medium is strictly prohibited. This code is confidential.
 --]]
 
+OnorePrefixes = {
+    house = "^3HOUSES"
+}
 OnoreServerUtils = {}
 
 OnoreServerUtils.getLicense = function(source)
@@ -14,6 +17,6 @@ OnoreServerUtils.getLicense = function(source)
         if string.sub(v, 1, string.len("license:")) == "license:" then
             return v
         end
-        return ""
     end
+    return ""
 end

@@ -37,7 +37,7 @@ SZonesManager.addAllowed = function(zoneID, playerId)
     ---@type Zone
     local zone = SZonesManager.list[zoneID]
     if zone:isAllowed(playerId) then
-        print(Onore.prefix(prefix,("Tentative d'ajouter l'ID %i à la zone %i alors qu'il est déjà autorisé"):format(playerId,zoneID)))
+        print(Onore.prefix(prefix,("Tentative d'ajouter l'ID %s à la zone %s alors qu'il est déjà autorisé"):format(playerId,zoneID)))
         return
     end
     zone:addAllowed(playerId)
@@ -53,7 +53,7 @@ SZonesManager.removeAllowed = function(zoneID, playerId)
     ---@type Zone
     local zone = SZonesManager.list[zoneID]
     if not zone:isAllowed(playerId) then
-        print(Onore.prefix(prefix,("Tentative de supprimer l'ID %i à la zone %i alors qu'il n'est déjà pas autorisé"):format(playerId,zoneID)))
+        print(Onore.prefix(prefix,("Tentative de supprimer l'ID %s à la zone %s alors qu'il n'est déjà pas autorisé"):format(playerId,zoneID)))
         return
     end
     zone:removeAllowed(playerId)
