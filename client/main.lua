@@ -22,7 +22,6 @@ Citizen.CreateThread(function()
     while ESX.GetPlayerData().job == nil do
         Wait(1)
     end
-    ESX.ShowNotification("~b~Bienvenue sur ~y~Onore RolePlay")
     Job = ESX.PlayerData.job
     if Jobs.list[Job.name] ~= nil and Jobs.list[Job.name].onChange ~= nil then
         Jobs.list[Job.name].onChange()
