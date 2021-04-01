@@ -16,6 +16,7 @@
 ---@field public laundryMarker number
 ---@field public ownerInfo string
 ---@field public inventory table
+---@field public allowedPlayers table
 House = {}
 House.__index = House
 
@@ -29,6 +30,7 @@ setmetatable(House, {
         self.info = info
         self.ownerInfo = ownerInfo
         self.inventory = inventory
+        self.allowedPlayers = {}
         -- Zones
         SetRoutingBucketPopulationEnabled(self.instance, false)
         return self
@@ -98,6 +100,15 @@ end
 ---@return void
 function House:openManger(source)
     -- TODO -> Ouvrir le manager
+    local license = OnoreServerUtils.getLicense(source)
+    if self:isOwner(source) then
+        local allPlayers = {}
+        local players = ESX.GetPlayers()
+        for _,id in pairs(players) do
+            allPlayers[id] = {license = OnoreServerUtils.getLicense(id), name = GetPlayerName(id)}
+        end
+        TriggerClientEvent("onore_realestateagent:openManagerPropertyMenu", source, allPlayers, self.allowedPlayers, license)
+    end
 end
 
 ---openLaundry
@@ -105,6 +116,24 @@ end
 ---@return void
 function House:openLaundry(source)
     -- TODO -> Ouvrir le laundry
+    local license = OnoreServerUtils.getLicense(source)
+    MySQL.Async.fetchAll("SELECT identifier FROM users WHERE license = @a", {['a'] = license}, function(result)
+        if result[1] then
+            local steam = result[1].identifier
+            MySQL.Async.fetchAll("SELECT * FROM datastore_data WHERE owner = @a AND name = @b", {
+                ['a'] = steam,
+                ['b'] = "property"
+            }, function(result2)
+                if result2[1] then
+                    TriggerClientEvent("onore_realestateagent:openLaundryPropertyMenu", source, json.decode(result2[1].data))
+                else
+                    TriggerClientEvent("esx:showNotification", source, "~r~Vous n'avez aucune tenue sauvegardée")
+                end
+            end)
+        else
+            TriggerClientEvent("esx:showNotification", source, "~r~Une erreur est survenue...")
+        end
+    end)
 end
 
 ---initMarker

@@ -87,6 +87,5 @@ AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, 
         end
         FreezeEntityPosition(PlayerPedId(), false)
         RMenu:Delete(cat, sub("main"))
-        RMenu:Delete(cat, sub("builder"))
     end)
 end)
