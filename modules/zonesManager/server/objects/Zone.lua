@@ -35,6 +35,7 @@ setmetatable(Zone, {
         self.restricted = restricted
         self.allowed = baseAllowed or {}
         SZonesManager.list[self.zoneID] = self
+        return self
     end
 })
 

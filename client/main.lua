@@ -8,6 +8,7 @@
 --]]
 
 ESX = nil
+menuIsOpened = false
 
 Citizen.CreateThread(function()
     Wait(1500)
