@@ -18,6 +18,7 @@
 ---@field public inventory table
 ---@field public allowedPlayers table
 ---@field public street string
+---@field public public boolean
 House = {}
 House.__index = House
 
@@ -33,6 +34,7 @@ setmetatable(House, {
         self.inventory = inventory
         self.allowedPlayers = {}
         self.street = street
+        self.public = false
         -- Zones
         SetRoutingBucketPopulationEnabled(self.instance, false)
         return self
@@ -131,7 +133,7 @@ function House:openManger(source)
         for _,id in pairs(players) do
             allPlayers[id] = {license = OnoreServerUtils.getLicense(id), name = GetPlayerName(id)}
         end
-        TriggerClientEvent("onore_realestateagent:openManagerPropertyMenu", source, allPlayers, self.allowedPlayers, license, self.houseId)
+        TriggerClientEvent("onore_realestateagent:openManagerPropertyMenu", source, allPlayers, self.allowedPlayers, license, self.houseId, self.public)
     end
 end
 
@@ -153,7 +155,7 @@ end
 function House:initMarker()
     SZonesManager.createPublic(vector3(self.info.entry.x, self.info.entry.y, self.info.entry.z), 22, {r = 52, g = 235, b = 201, a = 255}, function(source)
         TriggerEvent("onore_realestateagent:openPropertyMenu", source, self.houseId)
-    end, "Appuyez sur ~INPUT_CONTEXT~ pour intéragir avec la propriétée", 10.0, 1.0)
+    end, "Appuyez sur ~INPUT_CONTEXT~ pour intéragir avec la propriétée", 80.0, 1.0)
 
     local interiorInfos = OnoreInteriors[self.info.selectedInterior]
     self.exitMarker = SZonesManager.createPrivate(vector3(interiorInfos.interiorExit.x, interiorInfos.interiorExit.y, interiorInfos.interiorExit.z), 22, {r = 255, g = 0, b = 0, a = 255}, function(source)

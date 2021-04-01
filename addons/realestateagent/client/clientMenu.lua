@@ -14,7 +14,7 @@ local sub = function(str)
 end
 
 RegisterNetEvent("onore_realestateagent:openClientPropertyMenu")
-AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, info, license, isAllowed)
+AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, info, license, isAllowed, public)
     local plyPos = GetEntityCoords(PlayerPedId())
     local streetHash = Citizen.InvokeNative(0x2EB41072B4C1E4C0, plyPos.x, plyPos.y, plyPos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
     local street = GetStreetNameFromHashKey(streetHash)
@@ -49,6 +49,8 @@ AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, 
                 -- La maison est à vendre
                 if owner == "none" then
                     RageUI.Separator(("%s↓ ~g~Propriétée à vendre %s↓"):format(cVar, cVar))
+                    RageUI.ButtonWithStyle(("~g~Type ~s~→ ~r~%s"):format(OnoreInteriors[info[1]].label), nil, {}, true, function()
+                    end)
                     RageUI.ButtonWithStyle(("~g~Rue ~s~→ ~o~%s"):format(street), nil, {}, true, function()
                     end)
                     RageUI.ButtonWithStyle("~g~Bail ~s~→ ~y~À vie", nil, {}, true, function()
@@ -76,9 +78,20 @@ AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, 
                         end)
                     else
                         RageUI.Separator(("~g~Propriétaire~s~: ~y~%s"):format(info[4]))
-                        if isAllowed then
+                        if not public then
+                            if isAllowed then
+                                RageUI.Separator(("%s↓ ~g~Interactions %s↓"):format(cVar, cVar))
+                                RageUI.ButtonWithStyle("Entrer dans la propriétée ~s~(~b~Invité~s~)", nil, {RightLabel = "→→"}, true, function(_,_,s)
+                                    if s then
+                                        enteringHouse = true
+                                        TriggerServerEvent("onore_realestateagent:enterHouse", info[3], true, street)
+                                        shouldStayOpened = false
+                                    end
+                                end)
+                            end
+                        else
                             RageUI.Separator(("%s↓ ~g~Interactions %s↓"):format(cVar, cVar))
-                            RageUI.ButtonWithStyle("Entrer dans la propriétée ~s~(~b~Invité~s~)", nil, {RightLabel = "→→"}, true, function(_,_,s)
+                            RageUI.ButtonWithStyle("Entrer dans la propriétée ~s~(~g~Publique~s~)", nil, {RightLabel = "→→"}, true, function(_,_,s)
                                 if s then
                                     enteringHouse = true
                                     TriggerServerEvent("onore_realestateagent:enterHouse", info[3], true, street)

@@ -47,7 +47,7 @@ local function createHouse(data, author, street, announce)
         addHouse({ id = insertId, owner = "none", infos = data, ownerInfo = "none", inventory = {}, street }, false)
         TriggerClientEvent("onore_realestateagent:addAvailableHouse", -1, { id = insertId, coords = data.entry })
         TriggerClientEvent("esx:showNotification", author, "~g~Création de la propriétée effectuée !")
-        if announce then TriggerClientEvent("onore_utils:advancedNotif", -1, "~y~Agence immobilière", "~b~Nouvelle propriétée", ("Une nouvelle propriétée est disponible à ~p~%s ~s~pour la somme de ~g~%s$"):format(street, ESX.Math.GroupDigits(tonumber(data.price))), "CHAR_MINOTAUR", 1) end
+        if announce then TriggerClientEvent("onore_utils:advancedNotif", -1, "~y~Agence immobilière", "~b~Nouvelle propriétée", ("Une nouvelle propriétée ~s~(~o~%s~s~) est disponible à ~p~%s ~s~pour la somme de ~g~%s$"):format(OnoreInteriors[data.selectedInterior].label, street, ESX.Math.GroupDigits(tonumber(data.price))), "CHAR_MINOTAUR", 1) end
     end)
 end
 
@@ -66,7 +66,7 @@ AddEventHandler("onore_realestateagent:openPropertyMenu", function(source, prope
             isAllowed = true
         end
     end
-    TriggerClientEvent("onore_realestateagent:openClientPropertyMenu", source, house.ownerLicense, { house.info.selectedInterior, house.info.price, propertyID, house.ownerInfo }, OnoreServerUtils.getLicense(source), isAllowed)
+    TriggerClientEvent("onore_realestateagent:openClientPropertyMenu", source, house.ownerLicense, { house.info.selectedInterior, house.info.price, propertyID, house.ownerInfo }, OnoreServerUtils.getLicense(source), isAllowed, house.public)
 end)
 
 RegisterNetEvent("onore_realestateagent:saveProperty")
@@ -86,24 +86,25 @@ AddEventHandler("onore_realestateagent:enterHouse", function(houseId, isGuest, f
     ---@type House
     local house = HousesManager.list[houseId]
     -- TODO -> Faire le système de clés (autoriser d'autres joueurs)
-    if not isGuest then
-        if license ~= house.ownerLicense then
-            return
-        end
-    else
-        local isAllowed = false
-        for _,v in pairs(house.allowedPlayers) do
-            if v == license then
-                isAllowed = true
+    if not house.public then
+        if not isGuest then
+            if license ~= house.ownerLicense then
+                return
             end
-        end 
-        if not isAllowed then
-            print("not allowed")
-            return
+        else
+            local isAllowed = false
+            for _,v in pairs(house.allowedPlayers) do
+                if v == license then
+                    isAllowed = true
+                end
+            end 
+            if not isAllowed then
+                print("not allowed")
+                return
+            end
         end
     end
-    print("enter")
-    house:enter(source, isGuest, from)
+    house:enter(source, license ~= house.ownerLicense, from)
 end)
 
 RegisterNetEvent("onore_realestateagent:buyProperty")
@@ -174,7 +175,7 @@ AddEventHandler("onore_realestateagent:requestAvailableHouses", function()
 end)
 
 RegisterNetEvent("onore_realestateagent:setAllowed")
-AddEventHandler("onore_realestateagent:setAllowed", function(houseId, allowedTable)
+AddEventHandler("onore_realestateagent:setAllowed", function(houseId, allowedTable, isPublic)
     if not HousesManager.list[houseId] then
         return
     end
@@ -192,6 +193,7 @@ AddEventHandler("onore_realestateagent:setAllowed", function(houseId, allowedTab
             table.insert(newHouseAllowedTable, k)
         end
     end
+    house.public = isPublic
     house.allowedPlayers = newHouseAllowedTable
     HousesManager.list[houseId] = house
     TriggerClientEvent("esx:showNotification", source, "~g~Modification appliquées")

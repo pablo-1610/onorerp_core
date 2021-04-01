@@ -14,7 +14,7 @@ local sub = function(str)
 end
 
 RegisterNetEvent("onore_realestateagent:openManagerPropertyMenu")
-AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(onlinePlayers, allowedPlayers, license, houseId)
+AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(onlinePlayers, allowedPlayers, license, houseId, isPublic)
     if menuIsOpened or tpAnim then
         return
     end
@@ -59,7 +59,7 @@ AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(online
                 RageUI.Separator("↓ ~g~Gestion de la propriétée ~s~↓")
                 RageUI.ButtonWithStyle("Liste des autorisations", nil, { RightLabel = "→→" }, true, function(_, _, s)
                 end, RMenu:Get(cat, sub("invite")))
-                RageUI.ButtonWithStyle("Coffre fort", "~y~Cette fonctionalité sera disponible dès le 03/24/2020", { RightLabel = "→→" }, false, function(_, _, s)
+                RageUI.ButtonWithStyle("Coffre fort", "~y~Cette fonctionalité sera disponible dès le 03/04/2021", { RightLabel = "→→" }, false, function(_, _, s)
                 end, RMenu:Get(cat, sub("invite")))
             end, function()
             end)
@@ -69,16 +69,17 @@ AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(online
                 RageUI.ButtonWithStyle("Appliquer les autorisations", nil, { RightLabel = "→→" }, true, function(_, _, s)
                     if s then
                         ESX.ShowNotification("~o~Application des modifications en cours...")
-                        TriggerServerEvent("onore_realestateagent:setAllowed", houseId, autorisationTable)
+                        TriggerServerEvent("onore_realestateagent:setAllowed", houseId, autorisationTable, isPublic)
                         shouldStayOpened = false
                     end
                 end)
-                RageUI.Separator("↓ ~y~Autorisations ~s~↓")
-                if #onlinePlayers <= 0 then
-                    RageUI.Separator("")
-                    RageUI.Separator(("%sAucun joueur disponible"):format(cVar))
-                    RageUI.Separator("")
-                else
+                RageUI.Checkbox("Propriétée publique:", nil, isPublic, { Style = RageUI.CheckboxStyle.Tick }, function(Hovered, Selected, Active, Checked)
+                    isPublic = Checked
+                end, function()
+                end, function()
+                end)
+                if not isPublic then
+                    RageUI.Separator("↓ ~y~Autorisations ~s~↓")
                     for k, v in pairs(onlinePlayers) do
                         RageUI.Checkbox(("~o~%s ~s~→ ~y~%s"):format(k, v.name), nil, autorisationTable[v.license].can, { Style = RageUI.CheckboxStyle.Tick }, function(Hovered, Selected, Active, Checked)
                             autorisationTable[v.license].can = Checked
