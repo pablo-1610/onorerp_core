@@ -12,7 +12,7 @@ local ownedHouses = {}
 
 RegisterNetEvent("onore_realestateagent:cbAvailableHouses")
 AddEventHandler("onore_realestateagent:cbAvailableHouses", function(available, owned)
-    for _, blip in pairs(available) do
+    for _, blip in pairs(availableHouses) do
         if DoesBlipExist(blip) then
             RemoveBlip(blip)
         end
@@ -75,7 +75,7 @@ AddEventHandler("onore_realestateagent:addOwnedHouse", function(owned)
     BeginTextCommandSetBlipName("STRING")
     AddTextComponentString("Propriétée acquise")
     EndTextCommandSetBlipName(blip)
-    ownedHouses[houseID] = blip
+    ownedHouses[owned.id] = blip
 end)
 
 RegisterNetEvent("onore_realestateagent:houseNoLongerAvailable")
@@ -85,6 +85,15 @@ AddEventHandler("onore_realestateagent:houseNoLongerAvailable", function(houseID
     end
     RemoveBlip(availableHouses[houseID])
     availableHouses[houseID] = nil
+end)
+
+RegisterNetEvent("onore_realestateagent:houseNoLongerAllowed")
+AddEventHandler("onore_realestateagent:houseNoLongerAllowed", function(houseID)
+    if not accessHouses[houseID] or not DoesBlipExist(availableHouses[houseID]) then
+        return
+    end
+    RemoveBlip(accessHouses[houseID])
+    accessHouses[houseID] = nil
 end)
 
 AddEventHandler("onore_esxloaded", function()

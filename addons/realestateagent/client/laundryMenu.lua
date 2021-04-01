@@ -15,7 +15,6 @@ end
 
 RegisterNetEvent("onore_realestateagent:openLaundryPropertyMenu")
 AddEventHandler("onore_realestateagent:openLaundryPropertyMenu", function(dress)
-    dress = dress.dressing
     if menuIsOpened or tpAnim then
         return
     end

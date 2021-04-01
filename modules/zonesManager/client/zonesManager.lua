@@ -52,7 +52,7 @@ end)
 
 RegisterNetEvent("onore_zones:delMarker")
 AddEventHandler("onore_zones:delMarker", function(zoneID)
-    CZonesManager.list[zone.id] = nil
+    CZonesManager.list[zoneID] = nil
 end)
 
 RegisterNetEvent("onore_zones:cbZones")

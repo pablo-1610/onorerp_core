@@ -85,5 +85,5 @@ end
 ---@public
 ---@return void
 function Zone:removeAllowed(source)
-    self.allowed[source] = true
+    self.allowed[source] = nil
 end

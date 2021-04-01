@@ -17,11 +17,12 @@
 ---@field public ownerInfo string
 ---@field public inventory table
 ---@field public allowedPlayers table
+---@field public street string
 House = {}
 House.__index = House
 
 setmetatable(House, {
-    __call = function(_, houseId, ownerLicense, info, ownerInfo, inventory)
+    __call = function(_, houseId, ownerLicense, info, ownerInfo, inventory, street)
         local self = setmetatable({}, House)
         self.houseId = houseId
         self.ownerLicense = ownerLicense
@@ -31,6 +32,7 @@ setmetatable(House, {
         self.ownerInfo = ownerInfo
         self.inventory = inventory
         self.allowedPlayers = {}
+        self.street = street
         -- Zones
         SetRoutingBucketPopulationEnabled(self.instance, false)
         return self
@@ -79,6 +81,17 @@ function House:enter(source)
     SetPlayerRoutingBucket(source, self.instance)
     local interiorInfos = OnoreInteriors[self.info.selectedInterior]
     TriggerClientEvent("onore_realestateagent:enterHouse", source, interiorInfos.interiorEntry)
+    local isGuest = false
+    local license = OnoreServerUtils.getLicense(source)
+    if license ~= self.ownerLicense then isGuest = true end
+    if isGuest then
+        local players = ESX.GetPlayers()
+        for _,id in pairs(players) do
+            if OnoreServerUtils.getLicense(id) == self.ownerLicense then
+                TriggerClientEvent("esx:showNotification", id, ("[~y~Invité~s~] ~b~%s ~s~est entré dans votre maison à ~o~%s"):format(GetPlayerName(source),self.street))
+            end
+        end
+    end
 end
 
 ---exit
@@ -93,6 +106,17 @@ function House:exit(source)
     end
     SetPlayerRoutingBucket(source, 0)
     TriggerClientEvent("onore_realestateagent:exitHouse", source, self.info.entry)
+    local isGuest = false
+    local license = OnoreServerUtils.getLicense(source)
+    if license ~= self.ownerLicense then isGuest = true end
+    if isGuest then
+        local players = ESX.GetPlayers()
+        for _,id in pairs(players) do
+            if OnoreServerUtils.getLicense(id) == self.ownerLicense then
+                TriggerClientEvent("esx:showNotification", id, ("[~y~Invité~s~] ~b~%s ~s~est sorti(e) de votre maison à ~o~%s"):format(GetPlayerName(source),self.street))
+            end
+        end
+    end
 end
 
 ---openManger
@@ -107,7 +131,7 @@ function House:openManger(source)
         for _,id in pairs(players) do
             allPlayers[id] = {license = OnoreServerUtils.getLicense(id), name = GetPlayerName(id)}
         end
-        TriggerClientEvent("onore_realestateagent:openManagerPropertyMenu", source, allPlayers, self.allowedPlayers, license)
+        TriggerClientEvent("onore_realestateagent:openManagerPropertyMenu", source, allPlayers, self.allowedPlayers, license, self.houseId)
     end
 end
 
@@ -117,22 +141,9 @@ end
 function House:openLaundry(source)
     -- TODO -> Ouvrir le laundry
     local license = OnoreServerUtils.getLicense(source)
-    MySQL.Async.fetchAll("SELECT identifier FROM users WHERE license = @a", {['a'] = license}, function(result)
-        if result[1] then
-            local steam = result[1].identifier
-            MySQL.Async.fetchAll("SELECT * FROM datastore_data WHERE owner = @a AND name = @b", {
-                ['a'] = steam,
-                ['b'] = "property"
-            }, function(result2)
-                if result2[1] then
-                    TriggerClientEvent("onore_realestateagent:openLaundryPropertyMenu", source, json.decode(result2[1].data))
-                else
-                    TriggerClientEvent("esx:showNotification", source, "~r~Vous n'avez aucune tenue sauvegardée")
-                end
-            end)
-        else
-            TriggerClientEvent("esx:showNotification", source, "~r~Une erreur est survenue...")
-        end
+    local xPlayer = ESX.GetPlayerFromId(source)
+    TriggerEvent('esx_datastore:getDataStore', 'property', xPlayer.getIdentifier(), function(store)
+        TriggerClientEvent("onore_realestateagent:openLaundryPropertyMenu", source, store.get('dressing'))
     end)
 end
 

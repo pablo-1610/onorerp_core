@@ -14,13 +14,22 @@ local sub = function(str)
 end
 
 RegisterNetEvent("onore_realestateagent:openManagerPropertyMenu")
-AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(onlinePlayers, allowedPlayers, license)
+AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(onlinePlayers, allowedPlayers, license, houseId)
     if menuIsOpened or tpAnim then
         return
     end
     for k, v in pairs(onlinePlayers) do
         if v.license == license then
             onlinePlayers[k] = nil
+        end
+    end
+    local autorisationTable = {}
+    for k,v in pairs(onlinePlayers) do 
+        autorisationTable[v.license] = {can = false, id = v}
+    end
+    for k,v in pairs(allowedPlayers) do
+        if autorisationTable[v] ~= nil then
+            autorisationTable[v].can = true
         end
     end
     local cVar = "~s~"
@@ -59,7 +68,9 @@ AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(online
                 RageUI.Separator("↓ ~g~Gestion des autorisations ~s~↓")
                 RageUI.ButtonWithStyle("Appliquer les autorisations", nil, { RightLabel = "→→" }, true, function(_, _, s)
                     if s then
-                        RageUI.GoBack()
+                        ESX.ShowNotification("~o~Application des modifications en cours...")
+                        TriggerServerEvent("onore_realestateagent:setAllowed", houseId, autorisationTable)
+                        shouldStayOpened = false
                     end
                 end)
                 RageUI.Separator("↓ ~y~Autorisations ~s~↓")
@@ -69,12 +80,10 @@ AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(online
                     RageUI.Separator("")
                 else
                     for k, v in pairs(onlinePlayers) do
-                        RageUI.Checkbox(("~o~%s ~s~→ ~y~%s"):format(k, v.name), nil, allowedPlayers[v.license] ~= nil, { Style = RageUI.CheckboxStyle.Tick }, function(Hovered, Selected, Active, Checked)
-
+                        RageUI.Checkbox(("~o~%s ~s~→ ~y~%s"):format(k, v.name), nil, autorisationTable[v.license].can, { Style = RageUI.CheckboxStyle.Tick }, function(Hovered, Selected, Active, Checked)
+                            autorisationTable[v.license].can = Checked
                         end, function()
-
                         end, function()
-
                         end)
                     end
                 end

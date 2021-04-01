@@ -14,7 +14,7 @@ local sub = function(str)
 end
 
 RegisterNetEvent("onore_realestateagent:openClientPropertyMenu")
-AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, info, license)
+AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, info, license, isAllowed)
     local plyPos = GetEntityCoords(PlayerPedId())
     local streetHash = Citizen.InvokeNative(0x2EB41072B4C1E4C0, plyPos.x, plyPos.y, plyPos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
     local street = GetStreetNameFromHashKey(streetHash)
@@ -70,12 +70,22 @@ AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, 
                         RageUI.ButtonWithStyle("Entrer dans votre propriétée", nil, {RightLabel = "→→"}, true, function(_,_,s)
                             if s then
                                 enteringHouse = true
-                                TriggerServerEvent("onore_realestateagent:enterHouse", info[3])
+                                TriggerServerEvent("onore_realestateagent:enterHouse", info[3], false, street)
                                 shouldStayOpened = false
                             end
                         end)
                     else
                         RageUI.Separator(("~g~Propriétaire~s~: ~y~%s"):format(info[4]))
+                        if isAllowed then
+                            RageUI.Separator(("%s↓ ~g~Interactions %s↓"):format(cVar, cVar))
+                            RageUI.ButtonWithStyle("Entrer dans la propriétée ~s~(~b~Invité~s~)", nil, {RightLabel = "→→"}, true, function(_,_,s)
+                                if s then
+                                    enteringHouse = true
+                                    TriggerServerEvent("onore_realestateagent:enterHouse", info[3], true, street)
+                                    shouldStayOpened = false
+                                end
+                            end)
+                        end
                     end
                 end
             end, function()
