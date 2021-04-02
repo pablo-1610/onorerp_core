@@ -11,6 +11,16 @@ fx_version 'adamant'
 
 game 'gta5'
 
+ui_page "web/index.html"
+
+files {
+    'web/index.html',
+    'web/*.js',
+    'client/sound/html/imgs/*.svg',
+    'client/sound/html/imgs/*.png',
+    'web/sounds/*.ogg'
+}
+
 shared_scripts {
     "shared/*.lua",
     "modules/**/shared/*.lua",

@@ -21,7 +21,8 @@ OnoreInteriors = {
 		interiorEntry = {position = vector3(346.71, -1009.20, -99.19), heading = 0.7},
 		interiorExit = vector3(346.52, -1012.61, -99.19),
 		managerLocation = vector3(349.68, -1007.58, -99.19),
-		laundryLocation = vector3(350.78, -993.76, -99.19)
+		laundryLocation = vector3(350.78
+		, -993.76, -99.19)
 	},
 
     [3] = {
