@@ -7,10 +7,10 @@
   via any medium is strictly prohibited. This code is confidential.
 --]]
 
-HousesManager = {}
+OnoreSHousesManager = {}
 
-HousesManager.instanceRange = 1000
-HousesManager.list = {}
+OnoreSHousesManager.instanceRange = 1000
+OnoreSHousesManager.list = {}
 
 local function addHouse(info, needDecode)
     local house
@@ -20,7 +20,7 @@ local function addHouse(info, needDecode)
         house = House(info.id, info.owner, info.infos, info.ownerInfo, info.inventory, info.street)
     end
     house:initMarker()
-    HousesManager.list[house.houseId] = house
+    OnoreSHousesManager.list[house.houseId] = house
 end
 
 local function loadHouses()
@@ -60,7 +60,7 @@ AddEventHandler("onore_realestateagent:openPropertyMenu", function(source, prope
     ---@type House
     local license = OnoreServerUtils.getLicense(source)
     local isAllowed = false
-    local house = HousesManager.list[propertyID]
+    local house = OnoreSHousesManager.list[propertyID]
     for _,v in pairs(house.allowedPlayers) do 
         if v == license then
             isAllowed = true
@@ -78,7 +78,7 @@ end)
 
 RegisterNetEvent("onore_realestateagent:enterHouse")
 AddEventHandler("onore_realestateagent:enterHouse", function(houseId, isGuest, from)
-    if not HousesManager.list[houseId] then
+    if not OnoreSHousesManager.list[houseId] then
         return
     end
     local source = source
@@ -109,14 +109,14 @@ end)
 
 RegisterNetEvent("onore_realestateagent:buyProperty")
 AddEventHandler("onore_realestateagent:buyProperty", function(houseId)
-    if not HousesManager.list[houseId] then
+    if not OnoreSHousesManager.list[houseId] then
         return
     end
     local source = source
     local xPlayer = ESX.GetPlayerFromId(source)
     local bank = xPlayer.getAccount("bank").money
     ---@type House
-    local house = HousesManager.list[houseId]
+    local house = OnoreSHousesManager.list[houseId]
     if house.ownerLicense ~= "none" then
         TriggerClientEvent("esx:showNotification", source, "~r~Cette maison a déjà été achetée !")
         return
@@ -134,8 +134,8 @@ AddEventHandler("onore_realestateagent:buyProperty", function(houseId)
                     ['b'] = res[1].firstname.." "..res[1].lastname,
                     ['c'] = houseId
                 }, function(done)
-                    HousesManager.list[houseId].ownerLicense = license
-                    HousesManager.list[houseId].ownerInfo = res[1].firstname.." "..res[1].lastname
+                    OnoreSHousesManager.list[houseId].ownerLicense = license
+                    OnoreSHousesManager.list[houseId].ownerInfo = res[1].firstname.." "..res[1].lastname
                     TriggerClientEvent("onore_realestateagent:addOwnedHouse", source, {id = houseId, coords = house.info.entry})
                     TriggerClientEvent("onore_realestateagent:houseNoLongerAvailable", -1, houseId)
                     TriggerClientEvent("onore_utils:advancedNotif", source, "~y~Agence immobilière", "~b~Achat de propriétée", "~g~Félicitations ~s~! Cette propriétée est désormais la votre ! Profitez-en bien.", "CHAR_MINOTAUR", 1)
@@ -176,14 +176,14 @@ end)
 
 RegisterNetEvent("onore_realestateagent:setAllowed")
 AddEventHandler("onore_realestateagent:setAllowed", function(houseId, allowedTable, isPublic)
-    if not HousesManager.list[houseId] then
+    if not OnoreSHousesManager.list[houseId] then
         return
     end
     local newHouseAllowedTable = {}
     local source = source
     local license = OnoreServerUtils.getLicense(source)
     ---@type House
-    local house = HousesManager.list[houseId]
+    local house = OnoreSHousesManager.list[houseId]
     if not house:isOwner(source) then 
         return
     end
@@ -195,6 +195,6 @@ AddEventHandler("onore_realestateagent:setAllowed", function(houseId, allowedTab
     end
     house.public = isPublic
     house.allowedPlayers = newHouseAllowedTable
-    HousesManager.list[houseId] = house
+    OnoreSHousesManager.list[houseId] = house
     TriggerClientEvent("esx:showNotification", source, "~g~Modification appliquées")
 end)

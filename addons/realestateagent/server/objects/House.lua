@@ -27,7 +27,7 @@ setmetatable(House, {
         local self = setmetatable({}, House)
         self.houseId = houseId
         self.ownerLicense = ownerLicense
-        self.instance = HousesManager.instanceRange + houseId
+        self.instance = OnoreSHousesManager.instanceRange + houseId
         self.players = {}
         self.info = info
         self.ownerInfo = ownerInfo
