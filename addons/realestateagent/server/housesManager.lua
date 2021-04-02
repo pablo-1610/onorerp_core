@@ -13,6 +13,7 @@ OnoreSHousesManager.instanceRange = 1000
 OnoreSHousesManager.list = {}
 
 local function addHouse(info, needDecode)
+    ---@type House
     local house
     if needDecode then
         house = House(info.id, info.owner, json.decode(info.infos), info.ownerInfo, json.decode(info.inventory), info.street)
@@ -20,6 +21,7 @@ local function addHouse(info, needDecode)
         house = House(info.id, info.owner, info.infos, info.ownerInfo, info.inventory, info.street)
     end
     house:initMarker()
+    house:initBlips()
     OnoreSHousesManager.list[house.houseId] = house
 end
 
@@ -84,7 +86,7 @@ AddEventHandler("onore_realestateagent:enterHouse", function(houseId, isGuest, f
     local source = source
     local license = OnoreServerUtils.getLicense(source)
     ---@type House
-    local house = HousesManager.list[houseId]
+    local house = OnoreSHousesManager.list[houseId]
     -- TODO -> Faire le système de clés (autoriser d'autres joueurs)
     if not house.public then
         if not isGuest then
@@ -156,7 +158,7 @@ AddEventHandler("onore_realestateagent:requestAvailableHouses", function()
     local available = {}
     local owned = {}
     ---@param house House
-    for houseID, house in pairs(HousesManager.list) do
+    for houseID, house in pairs(OnoreSHousesManager.list) do
         if house.ownerLicense == "none" then
             available[houseID] = house.info.entry
         else

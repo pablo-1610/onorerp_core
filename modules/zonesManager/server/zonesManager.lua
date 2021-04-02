@@ -157,17 +157,3 @@ AddEventHandler("onore_zones:interact", function(zoneID)
     local zone = OnoreSZonesManager.list[zoneID]
     zone:interact(source)
 end)
-
-Citizen.CreateThread(function()
-    while true do
-        Wait(30000)
-        local restrictedZones = 0
-        ---@param zone Zone
-        for _,zone in pairs(OnoreSZonesManager.list) do
-            if zone:isRestricted() then
-                restrictedZones = restrictedZones + 1
-            end
-        end
-        print(Onore.prefix(OnorePrefixes.zones, ("Il y a %i zones actives (dont %i restricted)"):format(#OnoreSZonesManager.list, restrictedZones)))
-    end
-end)

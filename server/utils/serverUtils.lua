@@ -9,7 +9,9 @@
 
 OnorePrefixes = {
     house = "^3HOUSES",
-    zones = "^1ZONE"
+    zones = "^1ZONE",
+    blips = "^1BLIPS",
+    dev = "^4INFOS"
 }
 OnoreServerUtils = {}
 
@@ -21,3 +23,45 @@ OnoreServerUtils.getLicense = function(source)
     end
     return ""
 end
+
+OnoreServerUtils.trace = function(message, prefix)
+    print("[^1Onore^7] ("..prefix.."^7) "..message.."^7")
+end
+
+Citizen.CreateThread(function()
+    while true do
+        Wait(30000)
+        local restrictedZones, publicZones = 0, 0
+        local restrictedBlips, publicBlips = 0, 0
+        ---@param zone Zone
+        for _,zone in pairs(OnoreSZonesManager.list) do
+            if zone:isRestricted() then
+                restrictedZones = restrictedZones + 1
+            else
+                publicZones = publicZones + 1
+            end
+        end
+        ---@param blip Blip
+        for _,blip in pairs(OnoreSBlipsManager.list) do
+            if blip:isRestricted() then
+                restrictedBlips = restrictedBlips + 1
+            else
+                publicBlips = publicBlips + 1
+            end
+        end
+        OnoreServerUtils.trace(("Zones: %s%i%s (+%s%i%s) | Blips: %s%i%s (+%s%i%s)"):format(
+                "^2",
+                publicZones,
+                "^7",
+                "^3",
+                restrictedZones,
+                "^7",
+                "^2",
+                publicBlips,
+                "^7",
+                "^3",
+                restrictedBlips,
+                "^7"
+        ),OnorePrefixes.dev)
+    end
+end)

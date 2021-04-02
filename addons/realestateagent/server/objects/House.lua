@@ -19,6 +19,7 @@
 ---@field public allowedPlayers table
 ---@field public street string
 ---@field public public boolean
+---@field public blips table
 House = {}
 House.__index = House
 
@@ -35,6 +36,11 @@ setmetatable(House, {
         self.allowedPlayers = {}
         self.street = street
         self.public = false
+        self.blips = {
+            exit = nil,
+            laundry = nil,
+            manager = nil
+        }
         -- Zones
         SetRoutingBucketPopulationEnabled(self.instance, false)
         return self
@@ -77,8 +83,11 @@ function House:enter(source)
     print(Onore.prefix(OnorePrefixes.house, ("Le joueur ^2%s ^7est entrée dans la maison ^3%s ^7(^3%s^7)"):format(GetPlayerName(source),self.houseId,self.info.name)))
     OnoreSZonesManager.addAllowed(self.exitMarker, source)
     OnoreSZonesManager.addAllowed(self.laundryMarker, source)
+    OnoreSBlipsManager.addAllowed(self.blips.exit, source)
+    OnoreSBlipsManager.addAllowed(self.blips.laundry, source)
     if self:isOwner(source) then
         OnoreSZonesManager.addAllowed(self.managerMarker, source)
+        OnoreSBlipsManager.addAllowed(self.blips.manager, source)
     end
     SetPlayerRoutingBucket(source, self.instance)
     local interiorInfos = OnoreInteriors[self.info.selectedInterior]
@@ -103,8 +112,11 @@ function House:exit(source)
     print(Onore.prefix(OnorePrefixes.house, ("Le joueur ^2%s ^7est sorti(e) de la maison ^3%s ^7(^3%s^7)"):format(GetPlayerName(source),self.houseId,self.info.name)))
     OnoreSZonesManager.removeAllowed(self.exitMarker, source)
     OnoreSZonesManager.removeAllowed(self.laundryMarker, source)
+    OnoreSBlipsManager.removeAllowed(self.blips.exit, source)
+    OnoreSBlipsManager.removeAllowed(self.blips.laundry, source)
     if self:isOwner(source) then
         OnoreSZonesManager.removeAllowed(self.managerMarker, source)
+        OnoreSBlipsManager.removeAllowed(self.blips.manager, source)
     end
     SetPlayerRoutingBucket(source, 0)
     TriggerClientEvent("onore_realestateagent:exitHouse", source, self.info.entry)
@@ -168,4 +180,14 @@ function House:initMarker()
     self.laundryMarker = OnoreSZonesManager.createPrivate(vector3(interiorInfos.laundryLocation.x, interiorInfos.laundryLocation.y, interiorInfos.laundryLocation.z), 22, {r = 174, g = 62, b = 194, a = 255}, function(source)
         self:openLaundry(source)
     end, "Appuyez sur ~INPUT_CONTEXT~ pour ouvrir le dressing", 20.0, 1.0)
+end
+
+---initBlips
+---@public
+---@return void
+function House:initBlips()
+    local interiorInfos = OnoreInteriors[self.info.selectedInterior]
+    self.blips.exit = OnoreSBlipsManager.createPrivate(vector3(interiorInfos.interiorExit.x, interiorInfos.interiorExit.y, interiorInfos.interiorExit.z), 126, 59, 1.0, "Sortie de la propriétée", false)
+    self.blips.laundry = OnoreSBlipsManager.createPrivate(vector3(interiorInfos.laundryLocation.x, interiorInfos.laundryLocation.y, interiorInfos.laundryLocation.z), 73, 68, 1.0, "Dressing de la propriétée", false)
+    self.blips.manager = OnoreSBlipsManager.createPrivate(vector3(interiorInfos.managerLocation.x, interiorInfos.managerLocation.y, interiorInfos.managerLocation.z), 521, 81, 1.0, "Gestion de la propriétée", false)
 end

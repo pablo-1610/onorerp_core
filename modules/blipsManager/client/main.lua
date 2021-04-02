@@ -17,8 +17,8 @@ end)
 RegisterNetEvent("onore_blips:newBlip")
 ---@param blip Blip
 AddEventHandler("onore_blips:newBlip", function(blip)
-    blips.list[blip.id] = blip
-    local b = AddBlipForCoords(blip.position)
+    blips.list[blip.blipId] = blip
+    local b = AddBlipForCoord(blip.position)
     SetBlipSprite(b, blip.sprite)
     SetBlipColour(b, blip.color)
     SetBlipAsShortRange(b, blip.shortRange)
@@ -45,7 +45,7 @@ AddEventHandler("onore_blips:cbBlips", function(incomingBlips)
     blips.list = incomingBlips
     ---@param blip Blip
     for blipID, blip in pairs(incomingBlips) do
-        local b = AddBlipForCoords(blip.position)
+        local b = AddBlipForCoord(blip.position)
         SetBlipSprite(b, blip.sprite)
         SetBlipColour(b, blip.color)
         SetBlipAsShortRange(b, blip.shortRange)

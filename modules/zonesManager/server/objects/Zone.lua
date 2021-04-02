@@ -34,7 +34,7 @@ setmetatable(Zone, {
         self.itrDist = itrDist
         self.restricted = restricted
         self.allowed = baseAllowed or {}
-        SZonesManager.list[self.zoneID] = self
+        OnoreSZonesManager.list[self.zoneID] = self
         return self
     end
 })

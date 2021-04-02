@@ -13,7 +13,48 @@ OnoreSBlipsManager.list = {}
 OnoreSBlipsManager.createPublic = function(position, sprite, color, scale, text, shortRange)
     local blip = Blip(position, sprite, color, scale, text, shortRange, false)
     TriggerClientEvent("onore_blips:newBlip", -1, blip)
-    return zone.zoneID
+    return blip.blipId
+end
+
+OnoreSBlipsManager.createPrivate = function(position, sprite, color, scale, text, shortRange, baseAllowed)
+    local blip = Blip(position, sprite, color, scale, text, shortRange, true, baseAllowed)
+    local players = ESX.GetPlayers()
+    for k, v in pairs(players) do
+        if blip:isAllowed(v) then
+            TriggerClientEvent("onore_blips:newBlip", v, blip)
+        end
+    end
+    return blip.blipId
+end
+
+OnoreSBlipsManager.addAllowed = function(blipID, playerId)
+    if not OnoreSBlipsManager.list[blipID] then
+        return
+    end
+    ---@type Blip
+    local blip = OnoreSBlipsManager.list[blipID]
+    if blip:isAllowed(playerId) then
+        print(Onore.prefix(OnorePrefixes.blips,("Tentative d'ajouter l'ID %s au blip %s alors qu'il est déjà autorisé"):format(playerId,blipID)))
+        return
+    end
+    blip:addAllowed(playerId)
+    TriggerClientEvent("onore_blips:newBlip", playerId, blip)
+    OnoreSBlipsManager.list[blipID] = blip
+end
+
+OnoreSBlipsManager.removeAllowed = function(blipID, playerId)
+    if not OnoreSBlipsManager.list[blipID] then
+        return
+    end
+    ---@type Blip
+    local blip = OnoreSBlipsManager.list[blipID]
+    if not blip:isAllowed(playerId) then
+        print(Onore.prefix(OnorePrefixes.blips,("Tentative de supprimer l'ID %s au blip %s alors qu'il n'est déjà pas autorisé"):format(playerId,blipID)))
+        return
+    end
+    blip:removeAllowed(playerId)
+    TriggerClientEvent("onore_blips:delBlip", playerId, blipID)
+    OnoreSBlipsManager.list[blipID] = blip
 end
 
 OnoreSBlipsManager.updateOne = function(source)
