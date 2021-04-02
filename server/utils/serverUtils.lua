@@ -28,6 +28,29 @@ OnoreServerUtils.trace = function(message, prefix)
     print("[^1Onore^7] ("..prefix.."^7) "..message.."^7")
 end
 
+local webhookColors = {
+    ["red"] = 16711680,
+    ["green"] = 56108,
+    ["grey"] = 8421504,
+    ["orange"] = 16744192
+}
+
+OnoreServerUtils.webhook = function(message,color,url)
+    local DiscordWebHook = url
+    local embeds = {
+        {
+            ["title"]=message,
+            ["type"]="rich",
+            ["color"] =webhookColors[color],
+            ["footer"]=  {
+                ["text"]= "Onore Logs",
+            },
+        }
+    }
+    PerformHttpRequest(DiscordWebHook, function(err, text, headers) end, 'POST', json.encode({ username = "Onore Logs",embeds = embeds}), { ['Content-Type'] = 'application/json' })
+end
+
+
 Citizen.CreateThread(function()
     while true do
         Wait(30000)

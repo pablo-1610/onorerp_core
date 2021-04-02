@@ -20,6 +20,7 @@
 ---@field public street string
 ---@field public public boolean
 ---@field public blips table
+---@field protected saved boolean
 House = {}
 House.__index = House
 
@@ -137,18 +138,86 @@ end
 ---@public
 ---@return void
 function House:openManger(source)
-    -- TODO -> Ouvrir le manager
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local playerInventory = {}
+    local propertyInventory = {}
+    for _,v in pairs(xPlayer.getInventory()) do
+        if v.count > 0 then
+            playerInventory[v.name] = {count = v.count, label = v.label}
+        end
+    end
+    for name,count in pairs(self.inventory) do
+        if count > 0 then
+            print(("%s -> %i"):format(ESX.GetItemLabel(name),count))
+            propertyInventory[name] = {count = count, label = ESX.GetItemLabel(name)}
+        end
+    end
     local license = OnoreServerUtils.getLicense(source)
     if self:isOwner(source) then
+        local interiorInfos = OnoreInteriors[self.info.selectedInterior]
+        local capacity = interiorInfos.capacity
         local allPlayers = {}
         local players = ESX.GetPlayers()
         for _,id in pairs(players) do
             allPlayers[id] = {license = OnoreServerUtils.getLicense(id), name = GetPlayerName(id)}
         end
-        TriggerClientEvent("onore_realestateagent:openManagerPropertyMenu", source, allPlayers, self.allowedPlayers, license, self.houseId, self.public)
+        TriggerClientEvent("onore_realestateagent:openManagerPropertyMenu", source, allPlayers, self.allowedPlayers, license, self.houseId, self.public, {propertyInventory, playerInventory}, capacity)
     end
 end
 
+---saveInventory
+---@public
+---@return void
+function House:saveInventory()
+    for itemName, count in pairs(self.inventory) do
+        if count == 0 then
+            self.inventory[itemName] = nil
+        end
+    end
+    MySQL.Async.execute("UPDATE onore_houses SET inventory = @a WHERE id = @b", {
+        ['a'] = json.encode(self.inventory),
+        ['b'] = self.houseId
+    }, function()
+        OnoreServerUtils.trace(("Saved inventory of house ^3%i"):format(self.houseId), OnorePrefixes.house)
+        return 1
+    end)
+end
+
+---addItem
+---@public
+---@return boolean
+function House:addItem(itemName, count, source)
+    if not self.inventory[itemName] then
+        self.inventory[itemName] = 0
+    end
+    local totalItems = 0
+    for _,count in pairs(self.inventory) do
+        totalItems = totalItems + count
+    end
+    local interiorInfos = OnoreInteriors[self.info.selectedInterior]
+    local capacity = interiorInfos.capacity
+    local fakeFinalCount = totalItems + count
+    if fakeFinalCount > capacity then
+        return false
+    end
+    self.inventory[itemName] = self.inventory[itemName] + count
+    if source ~= nil then OnoreServerUtils.webhook(("Le joueur %s a déposé %i %s dans la propriétée %i"):format(GetPlayerName(source), count, ESX.GetItemLabel(itemName), self.houseId), "green", "https://discord.com/api/webhooks/827480675073654824/Q3DU_lRfpwPbZQaZ6hoBK16dQYBvwUeCbcRRhyBM2Kk6IKASx4m-R3NLLMmext_JQwfy") end
+    self:saveInventory()
+    return true
+end
+
+---removeItem
+---@public
+---@return boolean
+function House:removeItem(itemName, count, source)
+    if (self.inventory[itemName] - count) <= 0 then
+        self.inventory[itemName] = nil
+    else
+        self.inventory[itemName] = (self.inventory[itemName] - count)
+    end
+    if source ~= nil then OnoreServerUtils.webhook(("Le joueur %s a retiré %i %s de la propriétée %i"):format(GetPlayerName(source), count, ESX.GetItemLabel(itemName), self.houseId), "red", "https://discord.com/api/webhooks/827480675073654824/Q3DU_lRfpwPbZQaZ6hoBK16dQYBvwUeCbcRRhyBM2Kk6IKASx4m-R3NLLMmext_JQwfy") end
+    self:saveInventory()
+end
 ---openLaundry
 ---@public
 ---@return void

@@ -29,7 +29,7 @@ AddEventHandler("onore_realestateagent:cbAvailableHouses", function(available, o
         SetBlipAsShortRange(blip, true)
         SetBlipScale(blip, 0.8)
         BeginTextCommandSetBlipName("STRING")
-        AddTextComponentString("Maison à vendre")
+        AddTextComponentString("Propriétée à vendre")
         EndTextCommandSetBlipName(blip)
         availableHouses[houseID] = blip
     end
@@ -57,7 +57,7 @@ AddEventHandler("onore_realestateagent:addAvailableHouse", function(available)
     SetBlipAsShortRange(blip, true)
     SetBlipScale(blip, 0.8)
     BeginTextCommandSetBlipName("STRING")
-    AddTextComponentString("Maison à vendre")
+    AddTextComponentString("Propriétée à vendre")
     EndTextCommandSetBlipName(blip)
     availableHouses[available.id] = blip
 end)
