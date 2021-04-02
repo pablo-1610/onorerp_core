@@ -31,7 +31,7 @@ AddEventHandler("onore_realestateagent:deposit", function(houseId, itemName, dep
         return
     end
     xPlayer.removeInventoryItem(itemName, depositCount)
-    itemCount = xPlayer.getInventoryItem(itemName)
+    itemCount = xPlayer.getInventoryItem(itemName).count
     TriggerClientEvent("onore_realestateagent:depositSucceed", source, itemName, itemCount, depositCount)
 end)
 
@@ -59,6 +59,6 @@ AddEventHandler("onore_realestateagent:remove", function(houseId, itemName, remo
     end
     house:removeItem(itemName, removalCount, source)
     xPlayer.addInventoryItem(itemName, removalCount)
-    itemCount = xPlayer.getInventoryItem(itemName)
+    itemCount = xPlayer.getInventoryItem(itemName).count
     TriggerClientEvent("onore_realestateagent:removalSucceed", source, itemName, itemCount, removalCount)
 end)

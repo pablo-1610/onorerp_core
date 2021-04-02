@@ -18,8 +18,8 @@ local info = { type = nil, message = nil, }
 
 local function countItems(inventory)
     local count = 0
-    for k, v in pairs(inventory) do
-        count = count + v.count
+    for k, item in pairs(inventory) do
+        count = count + item.count
     end
     return count
 end
@@ -33,11 +33,12 @@ end)
 
 RegisterNetEvent("onore_realestateagent:depositSucceed")
 AddEventHandler("onore_realestateagent:depositSucceed", function(itemName, newCount, depositCout)
+    playerInv[itemName].count = newCount
     if propertyInv[itemName] == nil then
-        propertyInv[itemName] = 0
+        propertyInv[itemName] = {count = depositCout, label = playerInv[itemName].label}
+    else
+        propertyInv[itemName].count = (propertyInv[itemName].count + depositCout)
     end
-    propertyInv[itemName] = propertyInv[itemName] + depositCout
-    playerInv[itemName] = newCount
     Wait(600)
     servInteract = false
     info.type = -1
@@ -46,12 +47,16 @@ end)
 
 RegisterNetEvent("onore_realestateagent:removalSucceed")
 AddEventHandler("onore_realestateagent:removalSucceed", function(itemName, newCount, removalCount)
-    if (propertyInv[itemName] - removalCount) <= 0 then
+    if not playerInv[itemName] then
+        playerInv[itemName] = {count = removalCount, label = propertyInv[itemName].label}
+    else
+        playerInv[itemName].count = playerInv[itemName].count + removalCount
+    end
+    if (propertyInv[itemName].count - removalCount) <= 0 then
         propertyInv[itemName] = nil
     else
-        propertyInv[itemName] = (propertyInv[itemName] - removalCount)
+        propertyInv[itemName].count = (propertyInv[itemName].count - removalCount)
     end
-    playerInv[itemName] = newCount
     Wait(600)
     servInteract = false
     info.type = -1
@@ -176,21 +181,23 @@ AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(online
                     depositIndex = i
                 end)
                 for itemName, itemInfos in pairs(propertyInv) do
-                    RageUI.ButtonWithStyle(("%s ~s~(~b~%i~s~)"):format(itemInfos.label, itemInfos.count), nil, { RightLabel = removalAbility(itemInfos.count, depositIndex).display }, not servInteract, function(_, _, s)
-                        if s then
-                            if not depositAbility(itemInfos.count, depositIndex).ret then
-                                info.type = 2
-                                info.message = ("Il n'y a pas assez de %s"):format(itemInfos.label)
-                            else
-                                if not servInteract then
-                                    servInteract = true
-                                    info.type = 1
-                                    info.message = "Transaction avec le serveur en cours..."
-                                    TriggerServerEvent("onore_realestateagent:remove", houseId, itemName, depositIndex)
+                    if itemInfos.count > 0 then
+                        RageUI.ButtonWithStyle(("%s ~s~(~b~%i~s~)"):format(itemInfos.label, itemInfos.count), nil, { RightLabel = removalAbility(itemInfos.count, depositIndex).display }, not servInteract, function(_, _, s)
+                            if s then
+                                if not depositAbility(itemInfos.count, depositIndex).ret then
+                                    info.type = 2
+                                    info.message = ("Il n'y a pas assez de %s"):format(itemInfos.label)
+                                else
+                                    if not servInteract then
+                                        servInteract = true
+                                        info.type = 1
+                                        info.message = "Transaction avec le serveur en cours..."
+                                        TriggerServerEvent("onore_realestateagent:remove", houseId, itemName, depositIndex)
+                                    end
                                 end
                             end
-                        end
-                    end)
+                        end)
+                    end
                 end
             end, function()
             end)
@@ -206,21 +213,23 @@ AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(online
                 end)
                 RageUI.Separator("↓ ~y~Vos objets ~s~↓")
                 for itemName, itemInfos in pairs(playerInv) do
-                    RageUI.ButtonWithStyle(("%s ~s~(~b~%i~s~)"):format(itemInfos.label, itemInfos.count), nil, { RightLabel = depositAbility(itemInfos.count, depositIndex).display }, not servInteract, function(_, _, s)
-                        if s then
-                            if not depositAbility(itemInfos.count, depositIndex).ret then
-                                info.type = 2
-                                info.message = ("Vous n'avez pas assez de %s"):format(itemInfos.label)
-                            else
-                                if not servInteract then
-                                    servInteract = true
-                                    info.type = 1
-                                    info.message = "Transaction avec le serveur en cours..."
-                                    TriggerServerEvent("onore_realestateagent:deposit", houseId, itemName, depositIndex)
+                    if itemInfos.count > 0 then
+                        RageUI.ButtonWithStyle(("%s ~s~(~b~%i~s~)"):format(itemInfos.label, itemInfos.count), nil, { RightLabel = depositAbility(itemInfos.count, depositIndex).display }, not servInteract, function(_, _, s)
+                            if s then
+                                if not depositAbility(itemInfos.count, depositIndex).ret then
+                                    info.type = 2
+                                    info.message = ("Vous n'avez pas assez de %s"):format(itemInfos.label)
+                                else
+                                    if not servInteract then
+                                        servInteract = true
+                                        info.type = 1
+                                        info.message = "Transaction avec le serveur en cours..."
+                                        TriggerServerEvent("onore_realestateagent:deposit", houseId, itemName, depositIndex)
+                                    end
                                 end
                             end
-                        end
-                    end)
+                        end)
+                    end
                 end
                 -- TODO -> Lister les items
             end, function()
