@@ -24,7 +24,7 @@ Zone.__index = Zone
 setmetatable(Zone, {
     __call = function(_, location, type, color, onInteract, helpText, drawDist, itrDist, restricted, baseAllowed)
         local self = setmetatable({}, Zone)
-        self.zoneID = (#SZonesManager.list + 1)
+        self.zoneID = (#OnoreSZonesManager.list + 1)
         self.location = location
         self.type = type
         self.color = color

@@ -7,17 +7,17 @@
   via any medium is strictly prohibited. This code is confidential.
 --]]
 
-SZonesManager = {}
-SZonesManager.list = {}
+OnoreSZonesManager = {}
+OnoreSZonesManager.list = {}
 
-SZonesManager.createPublic = function(location, type, color, onInteract, helpText, drawDist, itrDist)
+OnoreSZonesManager.createPublic = function(location, type, color, onInteract, helpText, drawDist, itrDist)
     local zone = Zone(location, type, color, onInteract, helpText, drawDist, itrDist, false)
     local marker = { id = zone.zoneID, type = zone.type, color = zone.color, help = zone.helpText, position = zone.location, distances = { zone.drawDist, zone.itrDist } }
     TriggerClientEvent("onore_zones:newMarker", -1, marker)
     return zone.zoneID
 end
 
-SZonesManager.createPrivate = function(location, type, color, onInteract, helpText, drawDist, itrDist, baseAllowed)
+OnoreSZonesManager.createPrivate = function(location, type, color, onInteract, helpText, drawDist, itrDist, baseAllowed)
     local zone = Zone(location, type, color, onInteract, helpText, drawDist, itrDist, true, baseAllowed)
     local marker = { id = zone.zoneID, type = zone.type, color = zone.color, help = zone.helpText, position = zone.location, distances = { zone.drawDist, zone.itrDist } }
     local players = ESX.GetPlayers()
@@ -29,12 +29,12 @@ SZonesManager.createPrivate = function(location, type, color, onInteract, helpTe
     return zone.zoneID
 end
 
-SZonesManager.addAllowed = function(zoneID, playerId)
-    if not SZonesManager.list[zoneID] then
+OnoreSZonesManager.addAllowed = function(zoneID, playerId)
+    if not OnoreSZonesManager.list[zoneID] then
         return
     end
     ---@type Zone
-    local zone = SZonesManager.list[zoneID]
+    local zone = OnoreSZonesManager.list[zoneID]
     if zone:isAllowed(playerId) then
         print(Onore.prefix(OnorePrefixes.zones,("Tentative d'ajouter l'ID %s à la zone %s alors qu'il est déjà autorisé"):format(playerId,zoneID)))
         return
@@ -42,30 +42,30 @@ SZonesManager.addAllowed = function(zoneID, playerId)
     zone:addAllowed(playerId)
     local marker = { id = zone.zoneID, type = zone.type, color = zone.color, help = zone.helpText, position = zone.location, distances = { zone.drawDist, zone.itrDist } }
     TriggerClientEvent("onore_zones:newMarker", playerId, marker)
-    SZonesManager.list[zoneID] = zone
+    OnoreSZonesManager.list[zoneID] = zone
 end
 
-SZonesManager.removeAllowed = function(zoneID, playerId)
-    if not SZonesManager.list[zoneID] then
+OnoreSZonesManager.removeAllowed = function(zoneID, playerId)
+    if not OnoreSZonesManager.list[zoneID] then
         return
     end
     ---@type Zone
-    local zone = SZonesManager.list[zoneID]
+    local zone = OnoreSZonesManager.list[zoneID]
     if not zone:isAllowed(playerId) then
         print(Onore.prefix(OnorePrefixes.zones,("Tentative de supprimer l'ID %s à la zone %s alors qu'il n'est déjà pas autorisé"):format(playerId,zoneID)))
         return
     end
     zone:removeAllowed(playerId)
     TriggerClientEvent("onore_zones:delMarker", playerId, zoneID)
-    SZonesManager.list[zoneID] = zone
+    OnoreSZonesManager.list[zoneID] = zone
 end
 
-SZonesManager.updatePrivacy = function(zoneID, newPrivacy)
-    if not SZonesManager.list[zoneID] then
+OnoreSZonesManager.updatePrivacy = function(zoneID, newPrivacy)
+    if not OnoreSZonesManager.list[zoneID] then
         return
     end
     ---@type Zone
-    local zone = SZonesManager.list[zoneID]
+    local zone = OnoreSZonesManager.list[zoneID]
     local wereAllowed = {}
     local wasRestricted = zone:isRestricted()
     if zone:isRestricted() then
@@ -104,15 +104,15 @@ SZonesManager.updatePrivacy = function(zoneID, newPrivacy)
             end
         end
     end
-    SZonesManager.list[zoneID] = zone
+    OnoreSZonesManager.list[zoneID] = zone
 end
 
-SZonesManager.delete = function(zoneID)
-    if not SZonesManager.list[zoneID] then
+OnoreSZonesManager.delete = function(zoneID)
+    if not OnoreSZonesManager.list[zoneID] then
         return
     end
     ---@type Zone
-    local zone = SZonesManager.list[zoneID]
+    local zone = OnoreSZonesManager.list[zoneID]
     if zone:isRestricted() then
         local players = ESX.GetPlayers()
         for k, playerId in pairs(players) do
@@ -125,10 +125,10 @@ SZonesManager.delete = function(zoneID)
     end
 end
 
-SZonesManager.updateOne = function(source)
+OnoreSZonesManager.updateOne = function(source)
     local markers = {}
     ---@param zone Zone
-    for zoneID, zone in pairs(SZonesManager.list) do
+    for zoneID, zone in pairs(OnoreSZonesManager.list) do
         if zone:isRestricted() then
             if zone:isAllowed(source) then
                 markers[zoneID] = { id = zone.zoneID, type = zone.type, color = zone.color, help = zone.helpText, position = zone.location, distances = { zone.drawDist, zone.itrDist } }
@@ -143,18 +143,18 @@ end
 RegisterNetEvent("onore_zones:requestPredefinedZones")
 AddEventHandler("onore_zones:requestPredefinedZones", function()
     local source = source
-    SZonesManager.updateOne(source)
+    OnoreSZonesManager.updateOne(source)
 end)
 
 RegisterNetEvent("onore_zones:interact")
 AddEventHandler("onore_zones:interact", function(zoneID)
     local source = source
-    if not SZonesManager.list[zoneID] then
+    if not OnoreSZonesManager.list[zoneID] then
         DropPlayer("[Onore] Tentative d'intéragir avec une zone inéxistante.")
         return
     end
     ---@type Zone
-    local zone = SZonesManager.list[zoneID]
+    local zone = OnoreSZonesManager.list[zoneID]
     zone:interact(source)
 end)
 
@@ -163,11 +163,11 @@ Citizen.CreateThread(function()
         Wait(30000)
         local restrictedZones = 0
         ---@param zone Zone
-        for _,zone in pairs(SZonesManager.list) do
+        for _,zone in pairs(OnoreSZonesManager.list) do
             if zone:isRestricted() then
                 restrictedZones = restrictedZones + 1
             end
         end
-        print(Onore.prefix(OnorePrefixes.zones, ("Il y a %i zones actives (dont %i restricted)"):format(#SZonesManager.list, restrictedZones)))
+        print(Onore.prefix(OnorePrefixes.zones, ("Il y a %i zones actives (dont %i restricted)"):format(#OnoreSZonesManager.list, restrictedZones)))
     end
 end)

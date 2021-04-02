@@ -7,9 +7,9 @@
   via any medium is strictly prohibited. This code is confidential.
 --]]
 
-CZonesManager = {}
-CZonesManager.cooldown = false
-CZonesManager.list = {}
+local zones = {}
+zones.cooldown = false
+zones.list = {}
 
 AddEventHandler("onore_esxloaded", function()
     TriggerServerEvent("onore_zones:requestPredefinedZones")
@@ -17,7 +17,7 @@ AddEventHandler("onore_esxloaded", function()
         local interval = 500
         local pos = GetEntityCoords(PlayerPedId())
         local closeToMarker = false
-        for zoneId, zone in pairs(CZonesManager.list) do
+        for zoneId, zone in pairs(zones.list) do
             local zoneCoords = zone.position
             local dist = GetDistanceBetweenCoords(pos, zoneCoords, true)
             if dist <= zone.distances[1] then
@@ -27,11 +27,11 @@ AddEventHandler("onore_esxloaded", function()
                     AddTextEntry("ZONES", zone.help or "Appuyez sur ~INPUT_CONTEXT~ pour intéragir")
                     DisplayHelpTextThisFrame("ZONES", false)
                     if IsControlJustPressed(0, 51) then
-                        if not CZonesManager.cooldown then
-                            CZonesManager.cooldown = true
+                        if not zones.cooldown then
+                            zones.cooldown = true
                             TriggerServerEvent("onore_zones:interact", zone.id)
                             Citizen.SetTimeout(450, function()
-                                CZonesManager.cooldown = false
+                                zones.cooldown = false
                             end)
                         end
                     end
@@ -47,15 +47,15 @@ end)
 
 RegisterNetEvent("onore_zones:newMarker")
 AddEventHandler("onore_zones:newMarker", function(zone)
-    CZonesManager.list[zone.id] = zone
+    zones.list[zone.id] = zone
 end)
 
 RegisterNetEvent("onore_zones:delMarker")
 AddEventHandler("onore_zones:delMarker", function(zoneID)
-    CZonesManager.list[zoneID] = nil
+    zones.list[zoneID] = nil
 end)
 
 RegisterNetEvent("onore_zones:cbZones")
 AddEventHandler("onore_zones:cbZones", function(zoneInfos)
-    CZonesManager.list = zoneInfos
+    zones.list = zoneInfos
 end)

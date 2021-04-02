@@ -75,10 +75,10 @@ end
 ---@return void
 function House:enter(source)
     print(Onore.prefix(OnorePrefixes.house, ("Le joueur ^2%s ^7est entrée dans la maison ^3%s ^7(^3%s^7)"):format(GetPlayerName(source),self.houseId,self.info.name)))
-    SZonesManager.addAllowed(self.exitMarker, source)
-    SZonesManager.addAllowed(self.laundryMarker, source)
+    OnoreSZonesManager.addAllowed(self.exitMarker, source)
+    OnoreSZonesManager.addAllowed(self.laundryMarker, source)
     if self:isOwner(source) then
-        SZonesManager.addAllowed(self.managerMarker, source)
+        OnoreSZonesManager.addAllowed(self.managerMarker, source)
     end
     SetPlayerRoutingBucket(source, self.instance)
     local interiorInfos = OnoreInteriors[self.info.selectedInterior]
@@ -101,10 +101,10 @@ end
 ---@return void
 function House:exit(source)
     print(Onore.prefix(OnorePrefixes.house, ("Le joueur ^2%s ^7est sorti(e) de la maison ^3%s ^7(^3%s^7)"):format(GetPlayerName(source),self.houseId,self.info.name)))
-    SZonesManager.removeAllowed(self.exitMarker, source)
-    SZonesManager.removeAllowed(self.laundryMarker, source)
+    OnoreSZonesManager.removeAllowed(self.exitMarker, source)
+    OnoreSZonesManager.removeAllowed(self.laundryMarker, source)
     if self:isOwner(source) then
-        SZonesManager.removeAllowed(self.managerMarker, source)
+        OnoreSZonesManager.removeAllowed(self.managerMarker, source)
     end
     SetPlayerRoutingBucket(source, 0)
     TriggerClientEvent("onore_realestateagent:exitHouse", source, self.info.entry)
@@ -141,7 +141,6 @@ end
 ---@public
 ---@return void
 function House:openLaundry(source)
-    -- TODO -> Ouvrir le laundry
     local license = OnoreServerUtils.getLicense(source)
     local xPlayer = ESX.GetPlayerFromId(source)
     TriggerEvent('esx_datastore:getDataStore', 'property', xPlayer.getIdentifier(), function(store)
@@ -153,20 +152,20 @@ end
 ---@public
 ---@return void
 function House:initMarker()
-    SZonesManager.createPublic(vector3(self.info.entry.x, self.info.entry.y, self.info.entry.z), 22, {r = 52, g = 235, b = 201, a = 255}, function(source)
+    OnoreSZonesManager.createPublic(vector3(self.info.entry.x, self.info.entry.y, self.info.entry.z), 22, {r = 52, g = 235, b = 201, a = 255}, function(source)
         TriggerEvent("onore_realestateagent:openPropertyMenu", source, self.houseId)
     end, "Appuyez sur ~INPUT_CONTEXT~ pour intéragir avec la propriétée", 80.0, 1.0)
 
     local interiorInfos = OnoreInteriors[self.info.selectedInterior]
-    self.exitMarker = SZonesManager.createPrivate(vector3(interiorInfos.interiorExit.x, interiorInfos.interiorExit.y, interiorInfos.interiorExit.z), 22, {r = 255, g = 0, b = 0, a = 255}, function(source)
+    self.exitMarker = OnoreSZonesManager.createPrivate(vector3(interiorInfos.interiorExit.x, interiorInfos.interiorExit.y, interiorInfos.interiorExit.z), 22, {r = 255, g = 0, b = 0, a = 255}, function(source)
         self:exit(source)
     end, "Appuyez sur ~INPUT_CONTEXT~ pour sortir de la propriétée", 50.0, 1.0)
 
-    self.managerMarker = SZonesManager.createPrivate(vector3(interiorInfos.managerLocation.x, interiorInfos.managerLocation.y, interiorInfos.managerLocation.z), 22, {r = 62, g = 154, b = 194, a = 255}, function(source)
+    self.managerMarker = OnoreSZonesManager.createPrivate(vector3(interiorInfos.managerLocation.x, interiorInfos.managerLocation.y, interiorInfos.managerLocation.z), 22, {r = 62, g = 154, b = 194, a = 255}, function(source)
         self:openManger(source)
     end, "Appuyez sur ~INPUT_CONTEXT~ pour ouvrir le gestionnaire de propriétée", 20.0, 1.0)
 
-    self.laundryMarker = SZonesManager.createPrivate(vector3(interiorInfos.laundryLocation.x, interiorInfos.laundryLocation.y, interiorInfos.laundryLocation.z), 22, {r = 174, g = 62, b = 194, a = 255}, function(source)
+    self.laundryMarker = OnoreSZonesManager.createPrivate(vector3(interiorInfos.laundryLocation.x, interiorInfos.laundryLocation.y, interiorInfos.laundryLocation.z), 22, {r = 174, g = 62, b = 194, a = 255}, function(source)
         self:openLaundry(source)
     end, "Appuyez sur ~INPUT_CONTEXT~ pour ouvrir le dressing", 20.0, 1.0)
 end
