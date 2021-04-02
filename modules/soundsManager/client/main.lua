@@ -27,6 +27,6 @@ OnoreClientSoundsManager.playSound3d = function(soundFile, soundVolume, coords, 
     })
 end
 
-RegisterCommand("pablo", function()
-    PlayUrl("pablo", "https://youtu.be/o3WdLtpWM_c", 0.9, true)
-end)
+OnoreClientSoundsManager.playYouTube = function(id, url, volume, isLoop)
+    PlayUrl(id,url,volume,isLoop)
+end

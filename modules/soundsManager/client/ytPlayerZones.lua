@@ -15,7 +15,7 @@ Citizen.CreateThread(function()
         if not NearZone then
             Wait(2500)
         else
-            Wait(50)
+            Wait(250)
         end
         local ped = PlayerPedId()
         local pos = GetEntityCoords(ped)
@@ -29,15 +29,7 @@ Citizen.CreateThread(function()
 end)
 
 
-MusicZone = {
-    {
-        name = "bar_ambience",
-        link = "https://www.youtube.com/watch?v=ZcThrAU9yLk",
-        dst = 15.0,
-        starting = 35.0,
-        pos = vector3(281.4, -973.0, 29.87),
-        max = 0.05,
-    },
+local MusicZone = {
     {
         name = "police_radio",
         link = "https://www.youtube.com/watch?v=eqnq5XF3CJ0",
@@ -46,6 +38,25 @@ MusicZone = {
         pos = vector3(440.81, -977.01, 30.68),
         max = 0.1,
     },
+    -- Mag vetement 1
+    {
+        name = "onore_shop_ambiance1",
+        link = "https://www.youtube.com/watch?v=rS8t1q4cObI",
+        dst = 15.0,
+        starting = 30.0,
+        pos = vector3(122.56, -1032.94, 29.27),
+        max = 0.1
+    },
+    -- Mag vetement 2
+    {
+        name = "onore_shop_ambiance2",
+        link = "https://www.youtube.com/watch?v=rS8t1q4cObI",
+        dst = 25.0,
+        starting = 30.0,
+        pos = vector3(-715.92, -382.39, 34.82),
+        max = 0.1
+    },
+
     {
         name = "shop_ambient",
         link = "https://www.youtube.com/watch?v=WoxnL5dakyA&t=6s",
@@ -53,15 +64,7 @@ MusicZone = {
         starting = 30.0,
         pos = vector3(25.74, -1345.8, 29.49),
         max = 0.09,
-    },
-    {
-        name = "weed_ambient",
-        link = "https://www.youtube.com/watch?v=5qdTU3i6-XI",
-        dst = 15.0,
-        starting = 50.0,
-        pos = vector3(374.3, -826.14, 29.30),
-        max = 0.04,
-    },
+    }
 }
 
 Citizen.CreateThread(function()

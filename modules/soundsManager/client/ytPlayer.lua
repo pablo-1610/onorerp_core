@@ -7,9 +7,9 @@
   via any medium is strictly prohibited. This code is confidential.
 --]]
 
-soundInfo = {}
+local soundInfo = {}
 
-defaultInfo = {
+local defaultInfo = {
     volume = 1.0,
     url = "",
     id = "",
@@ -20,43 +20,43 @@ defaultInfo = {
     loop = false,
 }
 
-function getLink(name_)
+local function getLink(name_)
     return soundInfo[name_].url
 end
 
-function getPosition(name_)
+local function getPosition(name_)
     return soundInfo[name_].position
 end
 
-function isLooped(name_)
+local function isLooped(name_)
     return soundInfo[name_].loop
 end
 
-function getInfo(name_)
+local function getInfo(name_)
     return soundInfo[name_]
 end
 
-function soundExists(name_)
+local function soundExists(name_)
     if soundInfo[name_] == nil then
         return false
     end
     return true
 end
 
-function isPlaying(name_)
+local function isPlaying(name_)
     if soundInfo[name_] == nil then return false end
     return soundInfo[name_].playing
 end
 
-function isPaused(name_)
+local function isPaused(name_)
     return soundInfo[name_].paused
 end
 
-function getDistance(name_)
+local function getDistance(name_)
     return soundInfo[name_].distance
 end
 
-function getVolume(name_)
+local function getVolume(name_)
     return soundInfo[name_].volume
 end
 
@@ -104,7 +104,7 @@ function PlayUrlPos(name_, url_, volume_, pos, loop_)
     soundInfo[name_].loop = loop_ or false
 end
 
-function Distance(name_, distance_)
+local function Distance(name_, distance_)
     SendNUIMessage({
         status = "distance",
         name = name_,
@@ -113,7 +113,7 @@ function Distance(name_, distance_)
     soundInfo[name_].distance = distance_
 end
 
-function Position(name_, pos)
+local function Position(name_, pos)
     SendNUIMessage({
         status = "soundPosition",
         name = name_,
@@ -125,7 +125,7 @@ function Position(name_, pos)
     soundInfo[name_].id = name_
 end
 
-function Destroy(name_)
+local function Destroy(name_)
     SendNUIMessage({
         status = "delete",
         name = name_
@@ -133,7 +133,7 @@ function Destroy(name_)
     soundInfo[name_] = nil
 end
 
-function Resume(name_)
+local function Resume(name_)
     SendNUIMessage({
         status = "resume",
         name = name_
@@ -142,7 +142,7 @@ function Resume(name_)
     soundInfo[name_].paused = false
 end
 
-function Pause(name_)
+local function Pause(name_)
     SendNUIMessage({
         status = "pause",
         name = name_
@@ -151,7 +151,7 @@ function Pause(name_)
     soundInfo[name_].paused = true
 end
 
-function setVolume(name_, vol)
+local function setVolume(name_, vol)
     SendNUIMessage({
         status = "volume",
         volume = vol,
@@ -160,7 +160,7 @@ function setVolume(name_, vol)
     soundInfo[name_].volume = vol
 end
 
-function setVolumeMax(name_, vol)
+local function setVolumeMax(name_, vol)
     SendNUIMessage({
         status = "max_volume",
         volume = vol,
