@@ -14,7 +14,7 @@ OnoreInteriors = {
         interiorExit = vector3(266.05, -1007.20, -101.00),
         managerLocation = vector3(262.77, -1002.98, -99.00),
         laundryLocation = vector3(259.71, -1003.77, -99.00),
-		capacity = 50
+		capacity = 250
     },
 
 	[2] = {
@@ -23,7 +23,7 @@ OnoreInteriors = {
 		interiorExit = vector3(346.52, -1012.61, -99.19),
 		managerLocation = vector3(349.68, -1007.58, -99.19),
 		laundryLocation = vector3(350.78, -993.76, -99.19),
-		capacity = 85
+		capacity = 450
 	},
 
     [3] = {
@@ -32,7 +32,7 @@ OnoreInteriors = {
 		interiorExit = vector3(-18.53, -591.68, 90.11),
 		managerLocation = vector3(-27.97, -577.36, 83.90),
 		laundryLocation = vector3(-38.23, -583.34, 83.91),
-		capacity = 200
+		capacity = 800
 
     },
 
@@ -42,16 +42,34 @@ OnoreInteriors = {
 		interiorExit = vector3(-859.85, 691.153, 152.86),
 		managerLocation = vector3(-862.26, 700.47, 145.25),
 		laundryLocation = vector3(-855.22, 679.93, 149.05),
-		capacity = 200
+		capacity = 800
 
     },
 
     [5] = {
-      label = "Discothèque",
-      interiorEntry = {position = vector3(-1569.38, -3013.39, -74.40), heading = 3.65},
-      interiorExit = vector3(-1569.42, -3017.09, -74.40),
-      managerLocation = vector3(-1577.58, -3017, -79.00),
-      laundryLocation = vector3(-1596.04, -3005.42, -79.00),
-	  capacity = 500
-    }
+		label = "Discothèque",
+		interiorEntry = {position = vector3(-1569.38, -3013.39, -74.40), heading = 3.65},
+		interiorExit = vector3(-1569.42, -3017.09, -74.40),
+		managerLocation = vector3(-1577.58, -3017, -79.00),
+		laundryLocation = vector3(-1596.04, -3005.42, -79.00),
+		capacity = 1500
+    },
+
+	[6] = {
+		label = "Chambre seule",
+		interiorEntry = {position = vector3(152.34, -1005.86, -98.99), heading = 357.0},
+		interiorExit = vector3(151.30, -1007.70, -98.99),
+		managerLocation = vector3(154.21, -1006.34, -98.99),
+		laundryLocation = vector3(154.12, -1001.07, -98.99),
+		capacity = 100
+	},
+
+	[7] = {
+		label = "Bunker",
+		interiorEntry = {position = vector3(889.95, -3244.60, -98.26), heading = 105.07},
+		interiorExit = vector3(895.99, -3245.87, -98.24),
+		managerLocation = vector3(154.21, -1006.34, -98.99),
+		laundryLocation = vector3(154.12, -1001.07, -98.99),
+		capacity = 10000
+	}
 }

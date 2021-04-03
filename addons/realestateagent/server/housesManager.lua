@@ -146,7 +146,7 @@ AddEventHandler("onore_realestateagent:buyProperty", function(houseId)
         end)
 
     else
-        TriggerClientEvent("onore_utils:advancedNotif", -1, "~y~Agence immobilière", "~b~Achat de propriétée", "Vous n'avez pas assez d'argent en banque pour acheter cette propriétée !", "CHAR_MINOTAUR", 1)
+        TriggerClientEvent("onore_utils:advancedNotif", source, "~y~Agence immobilière", "~b~Achat de propriétée", "Vous n'avez pas assez d'argent en banque pour acheter cette propriétée !", "CHAR_MINOTAUR", 1)
     end
 end)
 
