@@ -1,0 +1,1 @@
++set onesync_enabled true +set onesync on +set onesync_enableInfinity true +set onesync_enableBeyond 1 +exec "server.cfg"
