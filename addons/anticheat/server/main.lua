@@ -67,7 +67,5 @@ end)
 
 AddEventHandler('clearPedTasksEvent', function(sender, ev)
     local license = OnoreServerUtils.getLicense(tonumber(sender))
-    OnoreServerUtils.webhook(("La license %s a clearTasks\n\nTable: %s"):format(license,json.encode(ev)), "red", "    https://discord.com/api/webhooks/828393690447478844/fykXu3yS19CvuySmn6olbwpNVNmZadsyKMtPE4FzfyYkKgCfUco0VX0IvxaH4fkHl3u_
-")
-    --CancelEvent()
+    OnoreServerUtils.webhook(("La license %s a clearTasks\n\nTable: %s"):format(license,json.encode(ev)), "red", "    https://discord.com/api/webhooks/828393690447478844/fykXu3yS19CvuySmn6olbwpNVNmZadsyKMtPE4FzfyYkKgCfUco0VX0IvxaH4fkHl3u_")
 end)
