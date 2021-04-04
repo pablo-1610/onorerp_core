@@ -11,7 +11,8 @@ OnorePrefixes = {
     house = "^3HOUSES",
     zones = "^1ZONE",
     blips = "^1BLIPS",
-    dev = "^4INFOS"
+    dev = "^4INFOS",
+    sync = "^6ONESYNC"
 }
 OnoreServerUtils = {}
 
