@@ -148,7 +148,6 @@ function House:openManger(source)
     end
     for name,count in pairs(self.inventory) do
         if count > 0 then
-            print(("%s -> %i"):format(ESX.GetItemLabel(name),count))
             propertyInventory[name] = {count = count, label = ESX.GetItemLabel(name)}
         end
     end
