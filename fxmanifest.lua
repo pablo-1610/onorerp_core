@@ -34,10 +34,10 @@ client_scripts {
     "client/utils/*.lua",
 
     "modules/**/client/*.lua",
-    "modules/**/client/objects/*.lua",
+    "modules/**/client/**/*.lua",
 
     "addons/**/client/*.lua",
-    "addons/**/client/objects/*.lua",
+    "addons/**/client/**/*.lua",
 
     "services/RageUI/client/RMenu.lua",
     "services/RageUI/client/menu/RageUI.lua",
@@ -56,8 +56,8 @@ server_scripts {
     "server/utils/*.lua",
 
     "modules/**/server/*.lua",
-    "modules/**/server/objects/*.lua",
+    "modules/**/server/**/*.lua",
 
     "addons/**/server/*.lua",
-    "addons/**/server/objects/*.lua"
+    "addons/**/server/**/*.lua"
 }

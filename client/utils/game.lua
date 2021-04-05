@@ -15,5 +15,16 @@ OnoreGameUtils.advancedNotification = function(sender, subject, msg, textureDict
     EndTextCommandThefeedPostMessagetext(textureDict, textureDict, false, iconType, sender, subject)
 end
 
+OnoreGameUtils.playAnim = function(dict, anim, flag, blendin, blendout, playbackRate, duration)
+	if blendin == nil then blendin = 1.0 end
+	if blendout == nil then blendout = 1.0 end
+	if playbackRate == nil then playbackRate = 1.0 end
+	if duration == nil then duration = -1 end
+	RequestAnimDict(dict)
+	while not HasAnimDictLoaded(dict) do Wait(1) print("Waiting for "..dict) end
+	TaskPlayAnim(GetPlayerPed(-1), dict, anim, blendin, blendout, duration, flag, playbackRate, 0, 0, 0)
+	RemoveAnimDict(dict)
+end	
+
 RegisterNetEvent("onore_utils:advancedNotif")
 AddEventHandler("onore_utils:advancedNotif", OnoreGameUtils.advancedNotification)
