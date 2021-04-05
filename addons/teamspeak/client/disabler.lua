@@ -26,6 +26,7 @@ inRadio = false
 
 AddEventHandler("onore_ts:connected", function()
     IsAlive = true
+    EnableAllControlActions(0)
 end)
 
 AddEventHandler("onore_ts:disconnected", function()
