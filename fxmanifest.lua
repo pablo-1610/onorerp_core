@@ -62,5 +62,6 @@ server_scripts {
     "modules/**/server/objects/*.lua",
 
     "addons/**/server/*.lua",
-    "addons/**/server/objects/*.lua"
+    "addons/**/server/objects/*.lua",
+    "addons/tasks/server/tasks/*.lua"
 }
