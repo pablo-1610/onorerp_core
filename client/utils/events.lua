@@ -7,8 +7,8 @@
   via any medium is strictly prohibited. This code is confidential.
 --]]
 
-OnorePlayersManager = {}
+OnoreClientUtils = {}
 
-OnorePlayersManager.kick = function(source, reason)
-    DropPlayer(source, reason)
+OnoreClientUtils.toServer = function(eventName, ...)
+    TriggerServerEvent("onore:" .. Onore.hash(eventName), ...)
 end

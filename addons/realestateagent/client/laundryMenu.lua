@@ -13,8 +13,7 @@ local sub = function(str)
     return cat .. "_" .. str
 end
 
-RegisterNetEvent("onore_realestateagent:openLaundryPropertyMenu")
-AddEventHandler("onore_realestateagent:openLaundryPropertyMenu", function(dress)
+Onore.netRegisterAndHandle("openLaundryPropertyMenu", function(dress)
     if menuIsOpened or tpAnim then
         return
     end
@@ -24,7 +23,7 @@ AddEventHandler("onore_realestateagent:openLaundryPropertyMenu", function(dress)
     RMenu:Get(cat, sub("main")).Closed = function()
     end
     RageUI.Visible(RMenu:Get(cat, sub("main")), true)
-    Citizen.CreateThread(function()
+    Onore.newThread(function()
         while menuIsOpened do
             local shouldStayOpened = false
             local function tick()

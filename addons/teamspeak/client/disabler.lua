@@ -8,33 +8,32 @@
 --]]
 
 
-Citizen.CreateThread(function()
+Onore.newThread(function()
 	local channel = math.random(1,99999999)
 	NetworkSetVoiceActive(true)
 	NetworkClearVoiceChannel()
 	NetworkSetVoiceChannel(1)
-	while true do
-		Wait(250)
-		NetworkSetVoiceActive(false)
-		NetworkSetVoiceChannel(channel)
-	end
+	Onore.newRepeatingTask(function()
+        NetworkSetVoiceActive(false)
+        NetworkSetVoiceChannel(channel)
+    end, nil, 0, 250)
 end)
 
 local IsAlive = false
 inRadio = false
 
 
-AddEventHandler("onore_ts:connected", function()
+Onore.netHandleBasic("onore_ts:connected", function()
     IsAlive = true
     EnableAllControlActions(0)
 end)
 
-AddEventHandler("onore_ts:disconnected", function()
+Onore.netHandleBasic("onore_ts:disconnected", function()
     IsAlive = false
 end)
 
 local TalkingToRadio = false
-Citizen.CreateThread(function()
+Onore.newThread(function()
     while true do
         if not IsAlive then
             Wait(1)

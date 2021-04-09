@@ -50,6 +50,6 @@ end
 LastTime = GetTime()
 Tick()
 
-AddEventHandler('cron:runAt', function(h, m, cb)
+Onore.netHandle('registerTask', function(h, m, cb)
 	RunAt(h, m, cb)
 end)

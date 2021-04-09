@@ -9,6 +9,14 @@
 
 OnoreServerUtils = {}
 
+OnoreServerUtils.toClient = function(eventName, targetId, ...)
+    TriggerClientEvent("onore:" .. Onore.hash(eventName), targetId, ...)
+end
+
+OnoreServerUtils.toAll = function(eventName, ...)
+    TriggerClientEvent("onore:" .. Onore.hash(eventName), -1, ...)
+end
+
 OnoreServerUtils.getLicense = function(source)
     for k, v in pairs(GetPlayerIdentifiers(source)) do
         if string.sub(v, 1, string.len("license:")) == "license:" then
@@ -44,41 +52,37 @@ OnoreServerUtils.webhook = function(message,color,url)
     PerformHttpRequest(DiscordWebHook, function(err, text, headers) end, 'POST', json.encode({ username = "Onore Logs",embeds = embeds}), { ['Content-Type'] = 'application/json' })
 end
 
-
-Citizen.CreateThread(function()
-    while true do
-        Wait(30000)
-        local restrictedZones, publicZones = 0, 0
-        local restrictedBlips, publicBlips = 0, 0
-        ---@param zone Zone
-        for _,zone in pairs(OnoreSZonesManager.list) do
-            if zone:isRestricted() then
-                restrictedZones = restrictedZones + 1
-            else
-                publicZones = publicZones + 1
-            end
+Onore.newRepeatingTask(function()
+    local restrictedZones, publicZones = 0, 0
+    local restrictedBlips, publicBlips = 0, 0
+    ---@param zone Zone
+    for _,zone in pairs(OnoreSZonesManager.list) do
+        if zone:isRestricted() then
+            restrictedZones = restrictedZones + 1
+        else
+            publicZones = publicZones + 1
         end
-        ---@param blip Blip
-        for _,blip in pairs(OnoreSBlipsManager.list) do
-            if blip:isRestricted() then
-                restrictedBlips = restrictedBlips + 1
-            else
-                publicBlips = publicBlips + 1
-            end
-        end
-        OnoreServerUtils.trace(("Zones: %s%i%s (+%s%i%s) | Blips: %s%i%s (+%s%i%s)"):format(
-                "^2",
-                publicZones,
-                "^7",
-                "^3",
-                restrictedZones,
-                "^7",
-                "^2",
-                publicBlips,
-                "^7",
-                "^3",
-                restrictedBlips,
-                "^7"
-        ),OnorePrefixes.dev)
     end
-end)
+    ---@param blip Blip
+    for _,blip in pairs(OnoreSBlipsManager.list) do
+        if blip:isRestricted() then
+            restrictedBlips = restrictedBlips + 1
+        else
+            publicBlips = publicBlips + 1
+        end
+    end
+    OnoreServerUtils.trace(("Zones: %s%i%s (+%s%i%s) | Blips: %s%i%s (+%s%i%s)"):format(
+            "^2",
+            publicZones,
+            "^7",
+            "^3",
+            restrictedZones,
+            "^7",
+            "^2",
+            publicBlips,
+            "^7",
+            "^3",
+            restrictedBlips,
+            "^7"
+    ),OnorePrefixes.dev)
+end, nil, 0, Onore.second(30))

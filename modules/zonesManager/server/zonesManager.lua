@@ -13,7 +13,7 @@ OnoreSZonesManager.list = {}
 OnoreSZonesManager.createPublic = function(location, type, color, onInteract, helpText, drawDist, itrDist)
     local zone = Zone(location, type, color, onInteract, helpText, drawDist, itrDist, false)
     local marker = { id = zone.zoneID, type = zone.type, color = zone.color, help = zone.helpText, position = zone.location, distances = { zone.drawDist, zone.itrDist } }
-    TriggerClientEvent("onore_zones:newMarker", -1, marker)
+    OnoreServerUtils.toAll("newMarker", marker)
     return zone.zoneID
 end
 
@@ -23,7 +23,7 @@ OnoreSZonesManager.createPrivate = function(location, type, color, onInteract, h
     local players = ESX.GetPlayers()
     for k, v in pairs(players) do
         if zone:isAllowed(v) then
-            TriggerClientEvent("onore_zones:newMarker", v, marker)
+            OnoreServerUtils.toClient("newMarker", v, marker)
         end
     end
     return zone.zoneID
@@ -41,7 +41,7 @@ OnoreSZonesManager.addAllowed = function(zoneID, playerId)
     end
     zone:addAllowed(playerId)
     local marker = { id = zone.zoneID, type = zone.type, color = zone.color, help = zone.helpText, position = zone.location, distances = { zone.drawDist, zone.itrDist } }
-    TriggerClientEvent("onore_zones:newMarker", playerId, marker)
+    OnoreServerUtils.toClient("newMarker", playerId, marker)
     OnoreSZonesManager.list[zoneID] = zone
 end
 
@@ -56,7 +56,7 @@ OnoreSZonesManager.removeAllowed = function(zoneID, playerId)
         return
     end
     zone:removeAllowed(playerId)
-    TriggerClientEvent("onore_zones:delMarker", playerId, zoneID)
+    OnoreServerUtils.toClient("delMarker", playerId, zoneID)
     OnoreSZonesManager.list[zoneID] = zone
 end
 
@@ -84,7 +84,7 @@ OnoreSZonesManager.updatePrivacy = function(zoneID, newPrivacy)
                     end
                 end
                 if not isAllowedtoSee then
-                    TriggerClientEvent("onore_zones:delMarker", playerId, zone.zoneID)
+                    OnoreServerUtils.toClient("delMarker", playerId, zone.zoneID)
                 end
             end
         end
@@ -99,7 +99,7 @@ OnoreSZonesManager.updatePrivacy = function(zoneID, newPrivacy)
                 end
                 if isAllowedtoSee then
                     local marker = { id = zone.zoneID, type = zone.type, color = zone.color, help = zone.helpText, position = zone.location, distances = { zone.drawDist, zone.itrDist } }
-                    TriggerClientEvent("onore_zones:newMarker", playerId, marker)
+                    OnoreServerUtils.toClient("newMarker", playerId, marker)
                 end
             end
         end
@@ -117,11 +117,11 @@ OnoreSZonesManager.delete = function(zoneID)
         local players = ESX.GetPlayers()
         for k, playerId in pairs(players) do
             if zone:isAllowed(playerId) then
-                TriggerClientEvent("onore_zones:delMarker", playerId, zoneID)
+                OnoreServerUtils.toClient("delMarker", playerId, zoneID)
             end
         end
     else
-        TriggerClientEvent("onore_zones:delMarker", -1, zoneID)
+        OnoreServerUtils.toAll("delMarker", zoneID)
     end
 end
 
@@ -137,17 +137,15 @@ OnoreSZonesManager.updateOne = function(source)
             markers[zoneID] = { id = zone.zoneID, type = zone.type, color = zone.color, help = zone.helpText, position = zone.location, distances = { zone.drawDist, zone.itrDist } }
         end
     end
-    TriggerClientEvent("onore_zones:cbZones", source, markers)
+    OnoreServerUtils.toClient("cbZones", source, markers)
 end
 
-RegisterNetEvent("onore_zones:requestPredefinedZones")
-AddEventHandler("onore_zones:requestPredefinedZones", function()
+Onore.netRegisterAndHandle("requestPredefinedZones", function()
     local source = source
     OnoreSZonesManager.updateOne(source)
 end)
 
-RegisterNetEvent("onore_zones:interact")
-AddEventHandler("onore_zones:interact", function(zoneID)
+Onore.netRegisterAndHandle("interactWithZone", function(zoneID)
     local source = source
     if not OnoreSZonesManager.list[zoneID] then
         DropPlayer("[Onore] Tentative d'intéragir avec une zone inéxistante.")

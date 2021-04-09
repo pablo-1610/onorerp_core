@@ -13,10 +13,9 @@ local sub = function(str)
     return cat .. "_" .. str
 end
 
-RegisterNetEvent("onore_realestateagent:openClientPropertyMenu")
-AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, info, license, isAllowed, public)
+Onore.netRegisterAndHandle("openClientPropertyMenu", function(owner, info, license, isAllowed, public)
     local plyPos = GetEntityCoords(PlayerPedId())
-    local streetHash = Citizen.InvokeNative(0x2EB41072B4C1E4C0, plyPos.x, plyPos.y, plyPos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+    local streetHash = Onore.invokeNative(0x2EB41072B4C1E4C0, plyPos.x, plyPos.y, plyPos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
     local street = GetStreetNameFromHashKey(streetHash)
     if menuIsOpened or tpAnim then
         return
@@ -28,7 +27,7 @@ AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, 
     RMenu:Get(cat, sub("main")).Closed = function()
     end
     RageUI.Visible(RMenu:Get(cat, sub("main")), true)
-    Citizen.CreateThread(function()
+    Onore.newThread(function()
         while menuIsOpened do
             if cVar == "~y~" then
                 cVar = "~o~"
@@ -38,7 +37,7 @@ AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, 
             Wait(800)
         end
     end)
-    Citizen.CreateThread(function()
+    Onore.newThread(function()
         while menuIsOpened do
             local shouldStayOpened = false
             local function tick()
@@ -60,7 +59,7 @@ AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, 
                     RageUI.Separator(("%s↓ ~g~Acheter %s↓"):format(cVar, cVar))
                     RageUI.ButtonWithStyle("~r~Acheter cette propriétée", nil, { RightLabel = ("%s →→"):format("~g~" .. ESX.Math.GroupDigits(tonumber(info[2])) .. "$~s~") }, true, function(_, _, s)
                         if s then
-                            TriggerServerEvent("onore_realestateagent:buyProperty", info[3])
+                            OnoreClientUtils.toServer("buyProperty", info[3])
                             shouldStayOpened = false
                         end
                     end)
@@ -72,7 +71,7 @@ AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, 
                         RageUI.ButtonWithStyle("Entrer dans votre propriétée", nil, {RightLabel = "→→"}, true, function(_,_,s)
                             if s then
                                 enteringHouse = true
-                                TriggerServerEvent("onore_realestateagent:enterHouse", info[3], false, street)
+                                OnoreClientUtils.toServer("enterHouse", info[3], false, street)
                                 shouldStayOpened = false
                             end
                         end)
@@ -84,7 +83,7 @@ AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, 
                                 RageUI.ButtonWithStyle("Entrer dans la propriétée ~s~(~b~Invité~s~)", nil, {RightLabel = "→→"}, true, function(_,_,s)
                                     if s then
                                         enteringHouse = true
-                                        TriggerServerEvent("onore_realestateagent:enterHouse", info[3], true, street)
+                                        OnoreClientUtils.toServer("enterHouse", info[3], true, street)
                                         shouldStayOpened = false
                                     end
                                 end)
@@ -94,7 +93,7 @@ AddEventHandler("onore_realestateagent:openClientPropertyMenu", function(owner, 
                             RageUI.ButtonWithStyle("Entrer dans la propriétée ~s~(~g~Publique~s~)", nil, {RightLabel = "→→"}, true, function(_,_,s)
                                 if s then
                                     enteringHouse = true
-                                    TriggerServerEvent("onore_realestateagent:enterHouse", info[3], true, street)
+                                    OnoreClientUtils.toServer("enterHouse", info[3], true, street)
                                     shouldStayOpened = false
                                 end
                             end)

@@ -10,13 +10,12 @@
 local blips = {}
 blips.list = {}
 
-AddEventHandler("onore_esxloaded", function()
-    TriggerServerEvent("onore_blips:requestPredefinedBlips")
+Onore.netHandle("esxloaded", function()
+    OnoreClientUtils.toServer("requestPredefinedBlips")
 end)
 
-RegisterNetEvent("onore_blips:newBlip")
 ---@param blip Blip
-AddEventHandler("onore_blips:newBlip", function(blip)
+Onore.netRegisterAndHandle("newBlip", function(blip)
     blips.list[blip.blipId] = blip
     local b = AddBlipForCoord(blip.position)
     SetBlipSprite(b, blip.sprite)
@@ -29,8 +28,7 @@ AddEventHandler("onore_blips:newBlip", function(blip)
     blips.list[blip.blipId].blip = b
 end)
 
-RegisterNetEvent("onore_blips:delBlip")
-AddEventHandler("onore_blips:delBlip", function(blipID)
+Onore.netRegisterAndHandle("delBlip", function(blipID)
     if blips.list[blipID] == nil then
         return
     end
@@ -40,8 +38,7 @@ AddEventHandler("onore_blips:delBlip", function(blipID)
     blips.list[blipID] = nil
 end)
 
-RegisterNetEvent("onore_blips:cbBlips")
-AddEventHandler("onore_blips:cbBlips", function(incomingBlips)
+Onore.netRegisterAndHandle("cbBlips", function(incomingBlips)
     blips.list = incomingBlips
     ---@param blip Blip
     for blipID, blip in pairs(incomingBlips) do

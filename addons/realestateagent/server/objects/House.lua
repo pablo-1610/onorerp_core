@@ -92,7 +92,7 @@ function House:enter(source)
     end
     SetPlayerRoutingBucket(source, self.instance)
     local interiorInfos = OnoreInteriors[self.info.selectedInterior]
-    TriggerClientEvent("onore_realestateagent:enterHouse", source, interiorInfos.interiorEntry)
+    OnoreServerUtils.toClient("enterHouse", source, interiorInfos.interiorEntry)
     local isGuest = false
     local license = OnoreServerUtils.getLicense(source)
     if license ~= self.ownerLicense then isGuest = true end
@@ -120,7 +120,7 @@ function House:exit(source)
         OnoreSBlipsManager.removeAllowed(self.blips.manager, source)
     end
     SetPlayerRoutingBucket(source, 0)
-    TriggerClientEvent("onore_realestateagent:exitHouse", source, self.info.entry)
+    OnoreServerUtils.toClient("exitHouse", source, self.info.entry)
     local isGuest = false
     local license = OnoreServerUtils.getLicense(source)
     if license ~= self.ownerLicense then isGuest = true end
@@ -160,7 +160,7 @@ function House:openManger(source)
         for _,id in pairs(players) do
             allPlayers[id] = {license = OnoreServerUtils.getLicense(id), name = GetPlayerName(id)}
         end
-        TriggerClientEvent("onore_realestateagent:openManagerPropertyMenu", source, allPlayers, self.allowedPlayers, license, self.houseId, self.public, {propertyInventory, playerInventory}, capacity)
+        OnoreServerUtils.toClient("openManagerPropertyMenu", source, allPlayers, self.allowedPlayers, license, self.houseId, self.public, {propertyInventory, playerInventory}, capacity)
     end
 end
 
@@ -224,7 +224,7 @@ function House:openLaundry(source)
     local license = OnoreServerUtils.getLicense(source)
     local xPlayer = ESX.GetPlayerFromId(source)
     TriggerEvent('esx_datastore:getDataStore', 'property', xPlayer.getIdentifier(), function(store)
-        TriggerClientEvent("onore_realestateagent:openLaundryPropertyMenu", source, store.get('dressing'))
+        OnoreServerUtils.toClient("openLaundryPropertyMenu", source, store.get('dressing'))
     end)
 end
 

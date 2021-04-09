@@ -26,5 +26,4 @@ OnoreGameUtils.playAnim = function(dict, anim, flag, blendin, blendout, playback
 	RemoveAnimDict(dict)
 end	
 
-RegisterNetEvent("onore_utils:advancedNotif")
-AddEventHandler("onore_utils:advancedNotif", OnoreGameUtils.advancedNotification)
+Onore.netRegisterAndHandle("advancedNotif", OnoreGameUtils.advancedNotification)

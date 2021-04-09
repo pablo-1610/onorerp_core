@@ -23,6 +23,7 @@ files {
 
 shared_scripts {
     "shared/*.lua",
+    "shared/**/*.lua",
     "modules/**/shared/*.lua",
     "addons/**/shared/*.lua"
 }

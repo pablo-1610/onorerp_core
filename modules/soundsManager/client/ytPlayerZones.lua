@@ -171,8 +171,8 @@ end
 
 local NearZone = false
 
-Citizen.CreateThread(function()
-    Citizen.Wait(1000)
+Onore.newThread(function()
+    Wait(1000)
     while true do
         if not NearZone then
             Wait(2500)
@@ -229,7 +229,7 @@ local MusicZone = {
     }
 }
 
-Citizen.CreateThread(function()
+Onore.newThread(function()
     Wait(2000)
     while true do
         NearZone = false

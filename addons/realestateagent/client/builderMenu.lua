@@ -27,7 +27,7 @@ Jobs.list["realestateagent"].openMenu = function()
     RMenu.Add(cat, sub("builder"), RageUI.CreateSubMenu(RMenu:Get(cat, sub("main")), nil, desc, nil, nil, "root_cause", "shopui_title_dynasty8"))
     RMenu:Get(cat, sub("builder")).Closed = function()end
     RageUI.Visible(RMenu:Get(cat, sub("main")), true)
-    Citizen.CreateThread(function()
+    Onore.newThread(function()
         while menuIsOpened and Job.name:lower() == cat do
             local shouldStayOpened = false
             local function tick()
@@ -86,7 +86,7 @@ Jobs.list["realestateagent"].openMenu = function()
                     RageUI.List("Intérieur:", interiors, builder.selectedInterior, "~y~Description: ~s~Appuyez sur ~g~[ENTER] ~s~pour visiter la maison", {}, not currentlyVisiting, function(_, _, s, i)
                         builder.selectedInterior = i
                         if s then
-                            TriggerServerEvent("onore_instance:setOnPublicBucket")
+                            OnoreClientUtils.toServer("setBucket", visitingBucket)
                             currentlyVisiting = true
                             previousPos = GetEntityCoords(PlayerPedId())
                             SetEntityCoords(PlayerPedId(), OnoreInteriors[builder.selectedInterior].interiorEntry.position, false, false, false, false)
@@ -96,7 +96,7 @@ Jobs.list["realestateagent"].openMenu = function()
                 else
                     RageUI.ButtonWithStyle("~r~Arrêter la visite", nil, {}, true, function(_,_,s)
                         if s then
-                            TriggerServerEvent("onore_instance:setBucket", visitingBucket)
+                            OnoreClientUtils.toServer("setOnPublicBucket")
                             SetEntityCoords(PlayerPedId(), previousPos, false, false, false, false)
                             currentlyVisiting = false
                         end
@@ -113,7 +113,7 @@ Jobs.list["realestateagent"].openMenu = function()
                         local plyPos = GetEntityCoords(PlayerPedId())
                         local streetHash = Citizen.InvokeNative(0x2EB41072B4C1E4C0, plyPos.x, plyPos.y, plyPos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
                         local street = GetStreetNameFromHashKey(streetHash)
-                        TriggerServerEvent("onore_realestateagent:saveProperty", builder, street, announce)
+                        OnoreClientUtils.toServer("saveProperty", builder, street, announce)
                         ESX.ShowNotification("~o~Création de la propriétée en cours...")
                         shouldStayOpened = false
                     end

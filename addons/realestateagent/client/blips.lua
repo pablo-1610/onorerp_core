@@ -10,8 +10,7 @@
 local availableHouses = {}
 local ownedHouses = {}
 
-RegisterNetEvent("onore_realestateagent:cbAvailableHouses")
-AddEventHandler("onore_realestateagent:cbAvailableHouses", function(available, owned)
+Onore.netRegisterAndHandle("cbAvailableHouses", function(available, owned)
     for _, blip in pairs(availableHouses) do
         if DoesBlipExist(blip) then
             RemoveBlip(blip)
@@ -46,8 +45,7 @@ AddEventHandler("onore_realestateagent:cbAvailableHouses", function(available, o
     end
 end)
 
-RegisterNetEvent("onore_realestateagent:addAvailableHouse")
-AddEventHandler("onore_realestateagent:addAvailableHouse", function(available)
+Onore.netRegisterAndHandle("addAvailableHouse", function(available)
     if availableHouses[available.id] then
         return
     end
@@ -62,8 +60,7 @@ AddEventHandler("onore_realestateagent:addAvailableHouse", function(available)
     availableHouses[available.id] = blip
 end)
 
-RegisterNetEvent("onore_realestateagent:addOwnedHouse")
-AddEventHandler("onore_realestateagent:addOwnedHouse", function(owned)
+Onore.netRegisterAndHandle("addOwnedHouse", function(owned)
     if ownedHouses[owned.id] then
         return
     end
@@ -78,8 +75,7 @@ AddEventHandler("onore_realestateagent:addOwnedHouse", function(owned)
     ownedHouses[owned.id] = blip
 end)
 
-RegisterNetEvent("onore_realestateagent:houseNoLongerAvailable")
-AddEventHandler("onore_realestateagent:houseNoLongerAvailable", function(houseID)
+Onore.netRegisterAndHandle("houseNoLongerAvailable", function(houseID)
     if not availableHouses[houseID] or not DoesBlipExist(availableHouses[houseID]) then
         return
     end
@@ -87,8 +83,7 @@ AddEventHandler("onore_realestateagent:houseNoLongerAvailable", function(houseID
     availableHouses[houseID] = nil
 end)
 
-RegisterNetEvent("onore_realestateagent:houseNoLongerAllowed")
-AddEventHandler("onore_realestateagent:houseNoLongerAllowed", function(houseID)
+Onore.netRegisterAndHandle("houseNoLongerAllowed", function(houseID)
     if not accessHouses[houseID] or not DoesBlipExist(availableHouses[houseID]) then
         return
     end
@@ -96,6 +91,6 @@ AddEventHandler("onore_realestateagent:houseNoLongerAllowed", function(houseID)
     accessHouses[houseID] = nil
 end)
 
-AddEventHandler("onore_esxloaded", function()
-    TriggerServerEvent("onore_realestateagent:requestAvailableHouses")
+Onore.netHandle("esxloaded", function()
+    OnoreClientUtils.toServer("requestAvailableHouses")
 end)

@@ -11,15 +11,15 @@ local zones = {}
 zones.cooldown = false
 zones.list = {}
 
-AddEventHandler("onore_esxloaded", function()
-    TriggerServerEvent("onore_zones:requestPredefinedZones")
+Onore.netHandle("esxloaded", function()
+    OnoreClientUtils.toServer("requestPredefinedZones")
     while true do
         local interval = 500
         local pos = GetEntityCoords(PlayerPedId())
         local closeToMarker = false
         for zoneId, zone in pairs(zones.list) do
             local zoneCoords = zone.position
-            local dist = GetDistanceBetweenCoords(pos, zoneCoords, true)
+            local dist = #(pos - zoneCoords)
             if dist <= zone.distances[1] then
                 closeToMarker = true
                 DrawMarker(zone.type, zoneCoords, 0.0, 0.0, 0.0, 0, 0.0, 0.0, 0.45, 0.45, 0.45, zone.color.r, zone.color.g, zone.color.b, zone.color.a, 55555, false, true, 2, false, false, false, false)
@@ -29,8 +29,8 @@ AddEventHandler("onore_esxloaded", function()
                     if IsControlJustPressed(0, 51) then
                         if not zones.cooldown then
                             zones.cooldown = true
-                            TriggerServerEvent("onore_zones:interact", zone.id)
-                            Citizen.SetTimeout(450, function()
+                            OnoreClientUtils.toServer("interactWithZone", zone.id)
+                            Onore.newWaitingThread(450, function()
                                 zones.cooldown = false
                             end)
                         end
@@ -45,17 +45,15 @@ AddEventHandler("onore_esxloaded", function()
     end
 end)
 
-RegisterNetEvent("onore_zones:newMarker")
-AddEventHandler("onore_zones:newMarker", function(zone)
+
+Onore.netRegisterAndHandle("newMarker", function(zone)
     zones.list[zone.id] = zone
 end)
 
-RegisterNetEvent("onore_zones:delMarker")
-AddEventHandler("onore_zones:delMarker", function(zoneID)
+Onore.netRegisterAndHandle("delMarker", function(zoneID)
     zones.list[zoneID] = nil
 end)
 
-RegisterNetEvent("onore_zones:cbZones")
-AddEventHandler("onore_zones:cbZones", function(zoneInfos)
+Onore.netRegisterAndHandle("cbZones", function(zoneInfos)
     zones.list = zoneInfos
 end)

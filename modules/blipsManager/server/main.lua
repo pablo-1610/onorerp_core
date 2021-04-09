@@ -12,7 +12,7 @@ OnoreSBlipsManager.list = {}
 
 OnoreSBlipsManager.createPublic = function(position, sprite, color, scale, text, shortRange)
     local blip = Blip(position, sprite, color, scale, text, shortRange, false)
-    TriggerClientEvent("onore_blips:newBlip", -1, blip)
+    OnoreServerUtils.toAll("newBlip", blip)
     return blip.blipId
 end
 
@@ -21,7 +21,7 @@ OnoreSBlipsManager.createPrivate = function(position, sprite, color, scale, text
     local players = ESX.GetPlayers()
     for k, v in pairs(players) do
         if blip:isAllowed(v) then
-            TriggerClientEvent("onore_blips:newBlip", v, blip)
+            OnoreServerUtils.toClient("newBlip", v, blip)
         end
     end
     return blip.blipId
@@ -38,7 +38,7 @@ OnoreSBlipsManager.addAllowed = function(blipID, playerId)
         return
     end
     blip:addAllowed(playerId)
-    TriggerClientEvent("onore_blips:newBlip", playerId, blip)
+    OnoreServerUtils.toClient("newBlip", playerId, blip)
     OnoreSBlipsManager.list[blipID] = blip
 end
 
@@ -53,7 +53,7 @@ OnoreSBlipsManager.removeAllowed = function(blipID, playerId)
         return
     end
     blip:removeAllowed(playerId)
-    TriggerClientEvent("onore_blips:delBlip", playerId, blipID)
+    OnoreServerUtils.toClient("delBlip", playerId, blipID)
     OnoreSBlipsManager.list[blipID] = blip
 end
 
@@ -69,11 +69,10 @@ OnoreSBlipsManager.updateOne = function(source)
             blips[blipID] = blip
         end
     end
-    TriggerClientEvent("onore_blips:cbBlips", source, blips)
+    OnoreServerUtils.toClient("cbBlips", source, blips)
 end
 
-RegisterNetEvent("onore_blips:requestPredefinedBlips")
-AddEventHandler("onore_blips:requestPredefinedBlips", function()
+Onore.netRegisterAndHandle("requestPredefinedBlips", function()
     local source = source
     OnoreSBlipsManager.updateOne(source)
 end)

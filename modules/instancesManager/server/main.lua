@@ -7,14 +7,12 @@
   via any medium is strictly prohibited. This code is confidential.
 --]]
 
-RegisterNetEvent("onore_instance:setBucket")
-AddEventHandler("onore_instance:setBucket", function(bucketID)
+Onore.netRegisterAndHandle("setBucket", function(bucketID)
     local source = source
     SetPlayerRoutingBucket(bucketID, 0)
 end)
 
-RegisterNetEvent("onore_instance:setOnPublicBucket")
-AddEventHandler("onore_instance:setOnPublicBucket", function()
+Onore.netRegisterAndHandle("setOnPublicBucket", function()
     local source = source
     SetPlayerRoutingBucket(source, 0)
 end)

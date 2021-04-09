@@ -26,6 +26,6 @@ local radioTower = {
 }
 
 
-Citizen.CreateThread(function()
+Onore.newThread(function()
     exports.saltychat:SetRadioTowers(radioTower)
 end)

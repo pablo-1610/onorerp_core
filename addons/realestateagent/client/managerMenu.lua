@@ -24,15 +24,13 @@ local function countItems(inventory)
     return count
 end
 
-RegisterNetEvent("onore_realestateagent:depositFailed")
-AddEventHandler("onore_realestateagent:depositFailed", function(callbackMessage)
+Onore.netRegisterAndHandle("houseDepositFailed", function(callbackMessage)
     servInteract = false
     info.type = 2
     info.message = callbackMessage
 end)
 
-RegisterNetEvent("onore_realestateagent:depositSucceed")
-AddEventHandler("onore_realestateagent:depositSucceed", function(itemName, newCount, depositCout)
+Onore.netRegisterAndHandle("houseDepositSucceed", function(itemName, newCount, depositCout)
     playerInv[itemName].count = newCount
     if propertyInv[itemName] == nil then
         propertyInv[itemName] = {count = depositCout, label = playerInv[itemName].label}
@@ -45,8 +43,7 @@ AddEventHandler("onore_realestateagent:depositSucceed", function(itemName, newCo
     info.message = "Transfert effectué"
 end)
 
-RegisterNetEvent("onore_realestateagent:removalSucceed")
-AddEventHandler("onore_realestateagent:removalSucceed", function(itemName, newCount, removalCount)
+Onore.netRegisterAndHandle("houseRemovalSucceed", function(itemName, newCount, removalCount)
     if not playerInv[itemName] then
         playerInv[itemName] = {count = removalCount, label = propertyInv[itemName].label}
     else
@@ -63,8 +60,7 @@ AddEventHandler("onore_realestateagent:removalSucceed", function(itemName, newCo
     info.message = "Transfert effectué"
 end)
 
-RegisterNetEvent("onore_realestateagent:openManagerPropertyMenu")
-AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(onlinePlayers, allowedPlayers, license, houseId, isPublic, inventories, capacity)
+Onore.netRegisterAndHandle("openManagerPropertyMenu", function(onlinePlayers, allowedPlayers, license, houseId, isPublic, inventories, capacity)
     info.type = nil
     local depositIndex = 1
     local depositList = {}
@@ -131,7 +127,7 @@ AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(online
             return alert
         end
     end
-    Citizen.CreateThread(function()
+    Onore.newThread(function()
         while menuIsOpened do
             Wait(800)
             if alert == "~s~" then
@@ -146,7 +142,7 @@ AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(online
             end
         end
     end)
-    Citizen.CreateThread(function()
+    Onore.newThread(function()
         while menuIsOpened do
             local shouldStayOpened = false
             local function tick()
@@ -192,7 +188,7 @@ AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(online
                                         servInteract = true
                                         info.type = 1
                                         info.message = "Transaction avec le serveur en cours..."
-                                        TriggerServerEvent("onore_realestateagent:remove", houseId, itemName, depositIndex)
+                                        OnoreClientUtils.toServer("removeFromHouse", houseId, itemName, depositIndex)
                                     end
                                 end
                             end
@@ -224,7 +220,7 @@ AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(online
                                         servInteract = true
                                         info.type = 1
                                         info.message = "Transaction avec le serveur en cours..."
-                                        TriggerServerEvent("onore_realestateagent:deposit", houseId, itemName, depositIndex)
+                                        OnoreClientUtils.toServer("depositHouse", houseId, itemName, depositIndex)
                                     end
                                 end
                             end
@@ -240,7 +236,7 @@ AddEventHandler("onore_realestateagent:openManagerPropertyMenu", function(online
                 RageUI.ButtonWithStyle("Appliquer les autorisations", nil, { RightLabel = "→→" }, true, function(_, _, s)
                     if s then
                         ESX.ShowNotification("~o~Application des modifications en cours...")
-                        TriggerServerEvent("onore_realestateagent:setAllowed", houseId, autorisationTable, isPublic)
+                        OnoreClientUtils.toServer("setHouseAlloweds", houseId, autorisationTable, isPublic)
                         shouldStayOpened = false
                     end
                 end)

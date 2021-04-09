@@ -15,8 +15,8 @@ for k,v in pairs(avaibleJobs) do
     Jobs.list[v] = {}
 end
 
-AddEventHandler("onore_esxloaded", function()
-    Citizen.CreateThread(function()
+Onore.netHandle("esxloaded", function()
+    Onore.newThread(function()
         while true do
             if Jobs.list[Job.name] ~= nil and Jobs.list[Job.name].openMenu ~= nil then
                 if IsControlJustPressed(0, 167) then

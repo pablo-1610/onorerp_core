@@ -47,17 +47,17 @@ local function createHouse(data, author, street, announce)
         ['g'] = street
     }, function(insertId)
         addHouse({ id = insertId, owner = "none", infos = data, ownerInfo = "none", inventory = {}, street }, false)
-        TriggerClientEvent("onore_realestateagent:addAvailableHouse", -1, { id = insertId, coords = data.entry })
+        OnoreServerUtils.toClient("addAvailableHouse", -1, { id = insertId, coords = data.entry })
         TriggerClientEvent("esx:showNotification", author, "~g~Création de la propriétée effectuée !")
-        if announce then TriggerClientEvent("onore_utils:advancedNotif", -1, "~y~Agence immobilière", "~b~Nouvelle propriétée", ("Une nouvelle propriétée ~s~(~o~%s~s~) est disponible à ~p~%s ~s~pour la somme de ~g~%s$"):format(OnoreInteriors[data.selectedInterior].label, street, ESX.Math.GroupDigits(tonumber(data.price))), "CHAR_MINOTAUR", 1) end
+        if announce then OnoreServerUtils.toAll("advancedNotif", "~y~Agence immobilière", "~b~Nouvelle propriétée", ("Une nouvelle propriétée ~s~(~o~%s~s~) est disponible à ~p~%s ~s~pour la somme de ~g~%s$"):format(OnoreInteriors[data.selectedInterior].label, street, ESX.Math.GroupDigits(tonumber(data.price))), "CHAR_MINOTAUR", 1) end
     end)
 end
 
-AddEventHandler("onore_esxloaded", function()
+Onore.netHandle("esxloaded", function()
     loadHouses()
 end)
 
-AddEventHandler("onore_realestateagent:openPropertyMenu", function(source, propertyID)
+Onore.netHandle("openPropertyMenu", function(source, propertyID)
     -- TODO -> (AntiCheat) Check la distance
     ---@type House
     local license = OnoreServerUtils.getLicense(source)
@@ -68,18 +68,16 @@ AddEventHandler("onore_realestateagent:openPropertyMenu", function(source, prope
             isAllowed = true
         end
     end
-    TriggerClientEvent("onore_realestateagent:openClientPropertyMenu", source, house.ownerLicense, { house.info.selectedInterior, house.info.price, propertyID, house.ownerInfo }, OnoreServerUtils.getLicense(source), isAllowed, house.public)
+    OnoreServerUtils.toClient("openClientPropertyMenu", source, house.ownerLicense, { house.info.selectedInterior, house.info.price, propertyID, house.ownerInfo }, OnoreServerUtils.getLicense(source), isAllowed, house.public)
 end)
 
-RegisterNetEvent("onore_realestateagent:saveProperty")
-AddEventHandler("onore_realestateagent:saveProperty", function(info, street, announce)
+Onore.netRegisterAndHandle("saveProperty", function(info, street, announce)
     -- TODO -> (AntiCheat) Check le job de la source
     local source = source
     createHouse(info, source, street, announce)
 end)
 
-RegisterNetEvent("onore_realestateagent:enterHouse")
-AddEventHandler("onore_realestateagent:enterHouse", function(houseId, isGuest, from)
+Onore.netRegisterAndHandle("enterHouse", function(houseId, isGuest, from)
     if not OnoreSHousesManager.list[houseId] then
         return
     end
@@ -101,7 +99,6 @@ AddEventHandler("onore_realestateagent:enterHouse", function(houseId, isGuest, f
                 end
             end 
             if not isAllowed then
-                print("not allowed")
                 return
             end
         end
@@ -109,8 +106,7 @@ AddEventHandler("onore_realestateagent:enterHouse", function(houseId, isGuest, f
     house:enter(source, license ~= house.ownerLicense, from)
 end)
 
-RegisterNetEvent("onore_realestateagent:buyProperty")
-AddEventHandler("onore_realestateagent:buyProperty", function(houseId)
+Onore.netRegisterAndHandle("buyProperty", function(houseId)
     if not OnoreSHousesManager.list[houseId] then
         return
     end
@@ -138,20 +134,19 @@ AddEventHandler("onore_realestateagent:buyProperty", function(houseId)
                 }, function(done)
                     OnoreSHousesManager.list[houseId].ownerLicense = license
                     OnoreSHousesManager.list[houseId].ownerInfo = res[1].firstname.." "..res[1].lastname
-                    TriggerClientEvent("onore_realestateagent:addOwnedHouse", source, {id = houseId, coords = house.info.entry})
-                    TriggerClientEvent("onore_realestateagent:houseNoLongerAvailable", -1, houseId)
-                    TriggerClientEvent("onore_utils:advancedNotif", source, "~y~Agence immobilière", "~b~Achat de propriétée", "~g~Félicitations ~s~! Cette propriétée est désormais la votre ! Profitez-en bien.", "CHAR_MINOTAUR", 1)
+                    OnoreServerUtils.toClient("addOwnedHouse", source, {id = houseId, coords = house.info.entry})
+                    OnoreServerUtils.toClient("advancedNotif", source, "~y~Agence immobilière", "~b~Achat de propriétée", "~g~Félicitations ~s~! Cette propriétée est désormais la votre ! Profitez-en bien.", "CHAR_MINOTAUR", 1)
+                    OnoreServerUtils.toAll("houseNoLongerAvailable", houseId)
                 end)
             end
         end)
 
     else
-        TriggerClientEvent("onore_utils:advancedNotif", source, "~y~Agence immobilière", "~b~Achat de propriétée", "Vous n'avez pas assez d'argent en banque pour acheter cette propriétée !", "CHAR_MINOTAUR", 1)
+        OnoreServerUtils.toClient("advancedNotif", source, "~y~Agence immobilière", "~b~Achat de propriétée", "Vous n'avez pas assez d'argent en banque pour acheter cette propriétée !", "CHAR_MINOTAUR", 1)
     end
 end)
 
-RegisterNetEvent("onore_realestateagent:requestAvailableHouses")
-AddEventHandler("onore_realestateagent:requestAvailableHouses", function()
+Onore.netRegisterAndHandle("requestAvailableHouses", function()
     local source = source
     local license = OnoreServerUtils.getLicense(source)
     local allowed = {}
@@ -173,11 +168,10 @@ AddEventHandler("onore_realestateagent:requestAvailableHouses", function()
             end
         end
     end
-    TriggerClientEvent("onore_realestateagent:cbAvailableHouses", source, available, owned, allowed)
+    OnoreServerUtils.toClient("cbAvailableHouses", source, available, owned, allowed)
 end)
 
-RegisterNetEvent("onore_realestateagent:setAllowed")
-AddEventHandler("onore_realestateagent:setAllowed", function(houseId, allowedTable, isPublic)
+Onore.netRegisterAndHandle("setHouseAlloweds", function(houseId, allowedTable, isPublic)
     if not OnoreSHousesManager.list[houseId] then
         return
     end

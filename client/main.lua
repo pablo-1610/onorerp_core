@@ -26,7 +26,7 @@ Citizen.CreateThread(function()
     if Jobs.list[Job.name] ~= nil and Jobs.list[Job.name].onChange ~= nil then
         Jobs.list[Job.name].onChange()
     end
-    TriggerEvent("onore_esxloaded")
+    Onore.toInternal("esxloaded")
 end)
 
 RegisterNetEvent("esx:setJob")

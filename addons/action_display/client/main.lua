@@ -14,7 +14,7 @@ local displayTime = 5000 -- Duration to display the text (in ms)
 local distToDraw = 250 -- Min. distance to draw 
 local pedDisplaying = {}
 
-function DrawText3D(coords, text)
+local function DrawText3D(coords, text)
     local camCoords = GetGameplayCamCoord()
     local dist = #(coords - camCoords)
     local scale = 200 / (GetGameplayCamFov() * dist)
@@ -38,8 +38,7 @@ local function Display(ped, text)
     if dist <= distToDraw then
         pedDisplaying[ped] = (pedDisplaying[ped] or 1) + 1
         local display = true
-        Citizen.CreateThread(function()
-            Wait(displayTime)
+        Onore.newWaitingThread(displayTime, function()
             display = false
         end)
         local offset = 0.8 + pedDisplaying[ped] * 0.1
@@ -73,7 +72,7 @@ RegisterCommand('me', function(source, args)
             table.insert(idsToSend, GetPlayerServerId(v))
         end
         local text = "* la personne" .. TableToString(args) .. " *"
-        TriggerServerEvent("onore_me:shareDisplay", idsToSend, text, pPedSID)
+        OnoreClientUtils.toServer("shareDisplay", idsToSend, text, pPedSID)
         ActionMeCoolDown()
     end
 end)
@@ -91,13 +90,12 @@ function SendActionTxt(text)
             end
         end
         local text = "* la personne" .. text .. " *"
-        TriggerServerEvent("onore_me:shareDisplay", idsToSend, text, pPedSID)
+        OnoreClientUtils.toServer("shareDisplay", idsToSend, text, pPedSID)
         ActionMeCoolDown()
     end
 end
 
-RegisterNetEvent('onore_me:shareDisplay')
-AddEventHandler('onore_me:shareDisplay', function(text, serverId)
+Onore.netRegisterAndHandle('shareDisplay', function(text, serverId)
     local ped = GetPlayerPed(GetPlayerFromServerId(serverId))
     if ped ~= nil then Display(ped, text) end
 end)
@@ -105,8 +103,7 @@ end)
 
 function ActionMeCoolDown()
     allowed = false
-    Citizen.CreateThread(function()
-        Wait(6*1000)
+    Onore.newWaitingThread(6*1000, function()
         allowed = true
     end)
 end

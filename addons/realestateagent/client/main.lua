@@ -10,8 +10,7 @@
 Jobs.list["realestateagent"].onChange = function()
 end
 
-RegisterNetEvent("onore_realestateagent:enterHouse")
-AddEventHandler("onore_realestateagent:enterHouse", function(coords)
+Onore.netRegisterAndHandle("enterHouse", function(coords)
     SetEntityInvincible(PlayerPedId(), true)
     FreezeEntityPosition(PlayerPedId(), true)
     SetCanAttackFriendly(PlayerPedId(), false, false)
@@ -25,8 +24,7 @@ AddEventHandler("onore_realestateagent:enterHouse", function(coords)
     tpAnim = false
 end)
 
-RegisterNetEvent("onore_realestateagent:exitHouse")
-AddEventHandler("onore_realestateagent:exitHouse", function(coords)
+Onore.netRegisterAndHandle("exitHouse", function(coords)
     tpAnim = true
     FreezeEntityPosition(PlayerPedId(), true)
     DoScreenFadeOut(750)
