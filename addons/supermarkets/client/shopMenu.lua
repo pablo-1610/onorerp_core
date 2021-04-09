@@ -77,7 +77,7 @@ Onore.netRegisterAndHandle("openSupermarketMenu", function(moneys, promos, items
     local catNum = 0
     for k,v in pairs(items) do
         local categ = v.category
-        if not categories[cat] then
+        if not categories[categ] then
             catNum = catNum + 1
             categories[categ] = {}
             RMenu.Add(cat, sub(("c%s"):format(categ)), RageUI.CreateSubMenu(RMenu:Get(cat, sub("main")), nil, desc, nil, nil, "root_cause", "shopui_title_24-7"))
