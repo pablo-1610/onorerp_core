@@ -30,7 +30,8 @@ Onore.netHandle("esxloaded", function()
                         if not zones.cooldown then
                             zones.cooldown = true
                             OnoreClientUtils.toServer("interactWithZone", zone.id)
-                            Onore.newWaitingThread(450, function()
+                            Onore.newThread(function()
+                                Wait(450)
                                 zones.cooldown = false
                             end)
                         end
