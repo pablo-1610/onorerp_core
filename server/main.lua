@@ -9,10 +9,6 @@
 
 ESX = nil
 
-Onore.prefix = function(title, message)
-    return ("[^1Onore^7] (%s^7) %s" .. "^7"):format(title, message)
-end
-
 TriggerEvent("esx:getSharedObject", function(obj)
     ESX = obj
     Wait(100)
