@@ -15,7 +15,7 @@ end
 
 Onore.netRegisterAndHandle("openClientPropertyMenu", function(owner, info, license, isAllowed, public)
     local plyPos = GetEntityCoords(PlayerPedId())
-    local streetHash = Onore.invokeNative(0x2EB41072B4C1E4C0, plyPos.x, plyPos.y, plyPos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+    local streetHash = Citizen.InvokeNative(0x2EB41072B4C1E4C0, plyPos.x, plyPos.y, plyPos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
     local street = GetStreetNameFromHashKey(streetHash)
     if menuIsOpened or tpAnim then
         return
