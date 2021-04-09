@@ -43,6 +43,7 @@ setmetatable(Zone, {
 ---@public
 ---@return void
 function Zone:interact(source)
+    print(GetPlayerName(source).." a intéragit avec la zone "..self.zoneID)
     self.onInteract(source)
 end
 
