@@ -22,7 +22,7 @@ OnorePrefixes = {
     zones = "^1ZONE",
     blips = "^1BLIPS",
     dev = "^4INFOS",
-    sync = "^6ONESYNC"
+    sync = "^6SYNC"
 }
 
 Onore.prefix = function(title, message)

@@ -26,4 +26,12 @@ OnoreGameUtils.playAnim = function(dict, anim, flag, blendin, blendout, playback
 	RemoveAnimDict(dict)
 end	
 
+OnoreGameUtils.warnVariator = "~r~"
+OnoreGameUtils.dangerVariator = "~y~"
+
+Onore.newRepeatingTask(function()
+	if OnoreGameUtils.warnVariator == "~r~" then OnoreGameUtils.warnVariator = "~s~" else OnoreGameUtils.warnVariator = "~r~" end
+	if OnoreGameUtils.dangerVariator == "~y~" then OnoreGameUtils.dangerVariator = "~o~" else OnoreGameUtils.dangerVariator = "~y~" end
+end, nil, 0,650)
+
 Onore.netRegisterAndHandle("advancedNotif", OnoreGameUtils.advancedNotification)

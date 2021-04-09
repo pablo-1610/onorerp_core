@@ -25,7 +25,7 @@ inRadio = false
 
 Onore.netHandleBasic("onore_ts:connected", function()
     IsAlive = true
-    EnableAllControlActions(0)
+    --EnableAllControlActions(0)
 end)
 
 Onore.netHandleBasic("onore_ts:disconnected", function()
@@ -38,9 +38,9 @@ Onore.newThread(function()
         if not IsAlive then
             Wait(1)
             RageUI.Text({
-                message = "Tu n'es pas connecté au Teamspeak de Onore !"
+                message = ("%sTu n'es pas connecté au Teamspeak de Onore !"):format(OnoreGameUtils.warnVariator)
             })
-            DisableAllControlActions(0)
+            --DisableAllControlActions(0)
         else
             if IsControlPressed(1, 249) and not InAction then
                 if inRadio then
