@@ -43,8 +43,8 @@ setmetatable(Zone, {
 ---@public
 ---@return void
 function Zone:interact(source)
-    print(GetPlayerName(source).." a intéragit avec la zone "..self.zoneID)
     self.onInteract(source)
+    OnoreServerUtils.trace(("%s a intéragit avec la zone n°%s"):format(GetPlayerName(source),self.zoneID), OnorePrefixes.zones)
 end
 
 ---setRestriction
