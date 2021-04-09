@@ -233,7 +233,7 @@ end
 ---@return void
 function House:initMarker()
     OnoreSZonesManager.createPublic(vector3(self.info.entry.x, self.info.entry.y, self.info.entry.z), 22, {r = 52, g = 235, b = 201, a = 255}, function(source)
-        TriggerEvent("onore_realestateagent:openPropertyMenu", source, self.houseId)
+        Onore.toInternal("openPropertyMenu", source, self.houseId)
     end, "Appuyez sur ~INPUT_CONTEXT~ pour intéragir avec la propriétée", 80.0, 1.0)
 
     local interiorInfos = OnoreInteriors[self.info.selectedInterior]

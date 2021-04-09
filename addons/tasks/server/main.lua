@@ -44,7 +44,10 @@ local function Tick()
 		LastTime = time
 	end
 
-	SetTimeout(60000, Tick)
+	Onore.newThread(function()
+		Wait(60000)
+		Tick()
+	end)
 end
 
 LastTime = GetTime()
