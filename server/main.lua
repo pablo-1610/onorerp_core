@@ -12,5 +12,5 @@ ESX = nil
 TriggerEvent("esx:getSharedObject", function(obj)
     ESX = obj
     Wait(100)
-    TriggerEvent("onore_esxloaded")
+    Onore.toInternal("esxloaded")
 end)
