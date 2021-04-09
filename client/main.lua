@@ -10,7 +10,7 @@
 ESX = nil
 menuIsOpened = false
 
-Citizen.CreateThread(function()
+Onore.newThread(function()
     Wait(1500)
     while ESX == nil do
         TriggerEvent("esx:getSharedObject", function(obj)

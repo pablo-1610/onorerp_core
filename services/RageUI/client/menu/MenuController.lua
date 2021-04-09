@@ -122,7 +122,7 @@ function RageUI.GoLeft(Controls)
                 if IsDisabledControlJustPressed(Controls.Left.Keys[Index][1], Controls.Left.Keys[Index][2]) then
                     Controls.Left.Pressed = true
 
-                    Citizen.CreateThread(function()
+                    Onore.newThread(function()
                         Controls.Left.Active = true
 
                         Citizen.Wait(0.01)
@@ -159,7 +159,7 @@ function RageUI.GoRight(Controls)
                 if IsDisabledControlJustPressed(Controls.Right.Keys[Index][1], Controls.Right.Keys[Index][2]) then
                     Controls.Right.Pressed = true
 
-                    Citizen.CreateThread(function()
+                    Onore.newThread(function()
                         Controls.Right.Active = true
 
                         Citizen.Wait(0.01)
@@ -195,7 +195,7 @@ function RageUI.GoSliderLeft(Controls)
             if not Controls.SliderLeft.Pressed then
                 if IsDisabledControlJustPressed(Controls.SliderLeft.Keys[Index][1], Controls.SliderLeft.Keys[Index][2]) then
                     Controls.SliderLeft.Pressed = true
-                    Citizen.CreateThread(function()
+                    Onore.newThread(function()
                         Controls.SliderLeft.Active = true
                         Citizen.Wait(1)
                         Controls.SliderLeft.Active = false
@@ -219,7 +219,7 @@ function RageUI.GoSliderRight(Controls)
             if not Controls.SliderRight.Pressed then
                 if IsDisabledControlJustPressed(Controls.SliderRight.Keys[Index][1], Controls.SliderRight.Keys[Index][2]) then
                     Controls.SliderRight.Pressed = true
-                    Citizen.CreateThread(function()
+                    Onore.newThread(function()
                         Controls.SliderRight.Active = true
                         Citizen.Wait(1)
                         Controls.SliderRight.Active = false
@@ -269,7 +269,7 @@ function RageUI.Controls()
                             if IsDisabledControlJustPressed(Controls.Up.Keys[Index][1], Controls.Up.Keys[Index][2]) then
                                 Controls.Up.Pressed = true
 
-                                Citizen.CreateThread(function()
+                                Onore.newThread(function()
                                     RageUI.GoUp(Options)
 
                                     Citizen.Wait(175)
@@ -295,7 +295,7 @@ function RageUI.Controls()
                             if IsDisabledControlJustPressed(Controls.Down.Keys[Index][1], Controls.Down.Keys[Index][2]) then
                                 Controls.Down.Pressed = true
 
-                                Citizen.CreateThread(function()
+                                Onore.newThread(function()
                                     RageUI.GoDown(Options)
 
                                     Citizen.Wait(175)
@@ -328,7 +328,7 @@ function RageUI.Controls()
                             if IsDisabledControlJustPressed(Controls.Select.Keys[Index][1], Controls.Select.Keys[Index][2]) then
                                 Controls.Select.Pressed = true
 
-                                Citizen.CreateThread(function()
+                                Onore.newThread(function()
                                     Controls.Select.Active = true
 
                                     Citizen.Wait(0.01)
@@ -363,7 +363,7 @@ function RageUI.Controls()
                             if IsDisabledControlJustPressed(Controls.Click.Keys[Index][1], Controls.Click.Keys[Index][2]) then
                                 Controls.Click.Pressed = true
 
-                                Citizen.CreateThread(function()
+                                Onore.newThread(function()
                                     Controls.Click.Active = true
 
                                     Citizen.Wait(0.01)

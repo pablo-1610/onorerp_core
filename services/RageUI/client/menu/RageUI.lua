@@ -672,7 +672,7 @@ end
 ---@return void
 ---@public
 function RageUI.CreateWhile(wait, menu, key, closure)
-    Citizen.CreateThread(function()
+    Onore.newThread(function()
         while (true) do
             Citizen.Wait(wait or 0.1)
 

@@ -61,7 +61,7 @@ function RageUI.CreateMenu(Title, Subtitle, X, Y, TextureDictionary, TextureName
         end
     end
 
-    Citizen.CreateThread(function()
+    Onore.newThread(function()
         if not HasScaleformMovieLoaded(Menu.InstructionalScaleform) then
             Menu.InstructionalScaleform = RequestScaleformMovie("INSTRUCTIONAL_BUTTONS")
             while not HasScaleformMovieLoaded(Menu.InstructionalScaleform) do
