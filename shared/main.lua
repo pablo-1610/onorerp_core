@@ -10,8 +10,7 @@
 Onore = {}
 Onore.newThread = Citizen.CreateThread
 Onore.newWaitingThread = Citizen.SetTimeout
-Onore.invokeNative = Citizen.InvokeNative
-Citizen.CreateThread, CreateThread, Citizen.SetTimeout, SetTimeout, InvokeNative, Citizen.InvokeNative = nil, nil, nil, nil, nil, nil
+Citizen.CreateThread, CreateThread, Citizen.SetTimeout, SetTimeout, InvokeNative = nil, nil, nil, nil, nil
 
 Job = nil
 Jobs = {}
