@@ -77,6 +77,10 @@ Onore.netRegisterAndHandle("shopPay", function(basket, promoCode, payMethod)
     if reduction ~= nil then
         price = applyPercentage(promoCache,promoCode,price)
     end
+    if money < price then
+        TriggerClientEvent("esx:showNotifciation", source, "~y~Détails~s~: ~r~Vous n'avez pas assez d'argent pour payer")
+        return
+    end
     pay(price)
     giveItems(basket, xPlayer)
     generateWebhook(OnoreSCache.getCache("shopsitems"), basket, reduction, promoCode, promoCache, source)
