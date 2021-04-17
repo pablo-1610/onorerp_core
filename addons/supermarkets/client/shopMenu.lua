@@ -63,7 +63,7 @@ Onore.netRegisterAndHandle("openSupermarketMenu", function(moneys, promos, items
     local function calcReduction(price)
         if not activePromoCode then return price end
         local percentage = tonumber(promos[activePromoCode].percentage)
-        return (price * (1-percentage))
+        return (price * (1-(percentage/100)))
     end
     local function canAfford(accountMoney)
         if accountMoney >= calcReduction(calcBasket()) then
@@ -110,7 +110,7 @@ Onore.netRegisterAndHandle("openSupermarketMenu", function(moneys, promos, items
                 RageUI.Separator("↓ ~y~Mon panier ~s~↓")
                 RageUI.ButtonWithStyle("Appliquer un code promotionnel", nil, { RightLabel = "→→" }, true, function(_, _, s)
                     if s then
-                        local result = OnoreMenuUtils.inputBox("Agence immo", "", 20, false)
+                        local result = OnoreMenuUtils.inputBox("Code promotionnel", "", 20, false)
                         if result ~= nil then
                             Onore.newThread(function()
                                 activatePromoCode(result)

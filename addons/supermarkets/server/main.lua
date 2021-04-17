@@ -28,7 +28,7 @@ end
 
 local function applyPercentage(promoCache,promoCode,price)
     local percentage = tonumber(promoCache[promoCode].percentage)
-    return (price * (1-percentage))
+    return (price * (1-(percentage/100)))
 end
 
 local function generateWebhook(itemsCache, basket, reduction, promoCode, promoCache, source)
