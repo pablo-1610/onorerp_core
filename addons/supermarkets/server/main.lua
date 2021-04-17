@@ -27,7 +27,8 @@ local function giveItems(basket, xPlayer, itemsCache)
 end
 
 local function applyPercentage(promoCache,promoCode,price)
-    return (price * tonumber(promoCache[promoCode].percentage))/100
+    local percentage = tonumber(promoCache[promoCode].percentage)
+    return (price * (1-percentage))
 end
 
 local function generateWebhook(itemsCache, basket, reduction, promoCode, promoCache, source)

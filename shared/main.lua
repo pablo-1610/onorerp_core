@@ -20,6 +20,7 @@ OnorePrefixes = {
     house = "^3HOUSES",
     zones = "^1ZONE",
     blips = "^1BLIPS",
+    npcs = "^1NPCS",
     dev = "^4INFOS",
     sync = "^6SYNC"
 }

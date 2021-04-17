@@ -9,6 +9,6 @@
 
 Onore.netHandle("esxloaded", function()
     for id, infos in pairs(OnoreSharedSuperMarketsLocation) do
-        Supermarket(infos.loc, id)
+        Supermarket(infos, id)
     end
 end)

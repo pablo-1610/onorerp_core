@@ -62,7 +62,8 @@ Onore.netRegisterAndHandle("openSupermarketMenu", function(moneys, promos, items
     end
     local function calcReduction(price)
         if not activePromoCode then return price end
-        return (price * tonumber(promos[activePromoCode].percentage))/100
+        local percentage = tonumber(promos[activePromoCode].percentage)
+        return (price * (1-percentage))
     end
     local function canAfford(accountMoney)
         if accountMoney >= calcReduction(calcBasket()) then
