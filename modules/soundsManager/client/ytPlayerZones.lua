@@ -226,6 +226,15 @@ local MusicZone = {
         starting = 30.0,
         pos = vector3(25.74, -1345.8, 29.49),
         max = 0.09,
+    },
+
+    {
+        name = "japan_ojap",
+        link = "https://youtu.be/f3SgSAD2hc4",
+        dst = 20.0,
+        starting = 30.0,
+        pos = vector3(-160.63, 292.91, 93.76),
+        max = 0.25,
     }
 }
 
