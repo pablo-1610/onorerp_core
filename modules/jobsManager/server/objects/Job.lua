@@ -12,14 +12,14 @@
 --]]
 
 ---@class Job
+---@field public identifier string
 Job = {}
 Job.__index = Job
 
 setmetatable(Job, {
-    __call = function(_)
+    __call = function(_, identifier)
         local self = setmetatable({}, Job);
-
-     
+        self.identifier = identifier
         return self;
     end
 })
