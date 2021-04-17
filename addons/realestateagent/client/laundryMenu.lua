@@ -17,6 +17,10 @@ Onore.netRegisterAndHandle("openLaundryPropertyMenu", function(dress)
     if menuIsOpened or tpAnim then
         return
     end
+    if not dress or dress == {} then
+        ESX.ShowNotification("~r~Vous n'avez aucune tenue")
+        return
+    end
     FreezeEntityPosition(PlayerPedId(), true)
     menuIsOpened = true
     RMenu.Add(cat, sub("main"), RageUI.CreateMenu(nil, desc, nil, nil, "root_cause", "shopui_title_dynasty8"))
