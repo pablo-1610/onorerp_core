@@ -12,14 +12,46 @@
 --]]
 
 ---@class Job
----@field public identifier string
+---@field public id number
+---@field public name string
+---@field public label string
 Job = {}
 Job.__index = Job
 
 setmetatable(Job, {
-    __call = function(_, identifier)
+    __call = function(_, name, label)
         local self = setmetatable({}, Job);
-        self.identifier = identifier
+        self.id = #OnoreSJobsManager.list + 1
+        self.name = name
+        self.label = label
+        OnoreSJobsManager[self.name] = self
         return self;
     end
 })
+
+---notifyEmployees
+---@public
+---@return void
+function Job:notifyEmployees(message)
+    local players = ESX.GetPlayers()
+    for k,v in pairs(players) do
+        local xPlayer = ESX.GetPlayerFromId(v)
+        if xPlayer.getJob() == self.name then
+            TriggerClientEvent("esx:showNotifciation", v, message)
+        end
+    end
+end
+
+---getActiveEmployees
+---@public
+---@return table
+function Job:getActiveEmployees()
+    local players, employees = ESX.GetPlayers(), {}
+    for k,v in pairs(players) do
+        local xPlayer = ESX.GetPlayerFromId(v)
+        if xPlayer.getJob() == self.name then
+            employees[v] = xPlayer
+        end
+    end
+    return employees
+end

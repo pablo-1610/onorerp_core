@@ -234,7 +234,7 @@ local MusicZone = {
         dst = 20.0,
         starting = 30.0,
         pos = vector3(-160.63, 292.91, 93.76),
-        max = 0.25,
+        max = 0.18,
     }
 }
 

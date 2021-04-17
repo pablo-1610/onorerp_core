@@ -14,6 +14,13 @@
 OnoreSJobsManager = {}
 OnoreSJobsManager.list = {}
 
+---getJob
+---@public
+---@return Job
+OnoreSJobsManager.getJob = function(job)
+    return OnoreSJobsManager.list[job]
+end
+
 MySQL.ready(function()
     MySQL.Async.fetchAll("SELECT * FROM jobs WHERE usePabloSystem = 1", {}, function(result)
         for _,job in pairs(result) do
