@@ -27,6 +27,8 @@ MySQL.ready(function()
             if not OnoreSharedCustomJobs[job.name] then
                 print(Onore.prefix(OnorePrefixes.jobs,("Impossible de charger le job %s"):format(job.label)))
             else
+                local society = ("society_%s"):format(job.name)
+                TriggerEvent('esx_society:registerSociety', job.name, job.label, society, society, society, {type = 'private'})
                 Job(job.name, job.label)
             end
         end

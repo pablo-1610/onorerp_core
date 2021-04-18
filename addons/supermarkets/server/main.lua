@@ -79,6 +79,7 @@ Onore.netRegisterAndHandle("shopPay", function(basket, promoCode, payMethod)
         price = applyPercentage(promoCache,promoCode,price)
     end
     if money < price then
+        OnoreServerUtils.toClient("supermarketCallback", source, false)
         TriggerClientEvent("esx:showNotifciation", source, "~y~Détails~s~: ~r~Vous n'avez pas assez d'argent pour payer")
         return
     end
