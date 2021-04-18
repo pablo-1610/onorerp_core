@@ -11,6 +11,8 @@
   via any medium is strictly prohibited. This code is confidential.
 --]]
 
+OnoreSCache.addCacheRule("ojapfood", "onore_ojapfood", Onore.second(10))
+
 Onore.netHandle("esxloaded", function()
     local npc = OnoreSNpcsManager.createPublic("ig_milton", false, true, {coords = vector3(-172.369, 291.94, 93.76), heading = 280.0}, "WORLD_HUMAN_AA_SMOKE")
     npc:setInvincible(true)
@@ -22,4 +24,16 @@ Onore.netHandle("esxloaded", function()
     npc = OnoreSNpcsManager.createPublic("s_m_y_devinsec_01", false, true, {coords = vector3(-164.18, 299.62, 93.76), heading = 190.66}, "WORLD_HUMAN_GUARD_STAND_FACILITY")
     npc:setInvincible(true)
     npc:setFloatingText("~r~La zone à gauche est reservée au personnel.", 2.8)
+end)
+
+Onore.netRegisterAndHandle("ojapRequestItem", function(item)
+    local source = source
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if xPlayer.getJob().name ~= "ojap" then
+        return
+    end
+    local itemsCache = OnoreSCache.getCache("ojapfood")
+    if not itemsCache[item] then return end
+    xPlayer.addInventoryItem(itemsCache[item].item, 1)
+    OnoreServerUtils.toClient("ojapCbItem", source)
 end)

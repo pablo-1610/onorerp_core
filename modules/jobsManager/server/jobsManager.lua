@@ -37,6 +37,7 @@ Onore.netHandle("esxloaded", function()
                 TriggerEvent('esx_society:registerSociety', job.name, job.label, society, society, society, {type = 'private'})
                 print(Onore.prefix(OnorePrefixes.jobs,("Chargement du job ^1%s ^7!"):format(job.name)))
                 Job(job.name, job.label)
+                OnoreSharedCustomJobs[job.name].onThisJobInit(OnoreSJobsManager.list[job.name])
             end
         end
     end)

@@ -19,6 +19,7 @@
 ---@field public safeMarker number
 ---@field public laundryMarker number
 ---@field public bossMarker number
+---@field public otherMarkers table
 Job = {}
 Job.__index = Job
 
@@ -28,6 +29,7 @@ setmetatable(Job, {
         self.id = #OnoreSJobsManager.list + 1
         self.name = name
         self.label = label
+        self.otherMarkers = {}
         self:init()
         OnoreSJobsManager.list[self.name] = self
         return self;
@@ -39,9 +41,11 @@ setmetatable(Job, {
 ---@return void
 function Job:init()
     local infos = OnoreSharedCustomJobs[self.name]
+    --[[
     self.safeMarker = OnoreSZonesManager.createPrivate(infos.inventory, 22, {r = 255, g = 0, b = 0, a = 255}, function(source)
         -- TODO -> InventoryManager.openInventory(source)
     end, "Appuyez sur ~INPUT_CONTEXT~ pour ouvrir le coffre-fort", 20.0, 1.0, {})
+    --]]
 
     self.laundryMarker = OnoreSZonesManager.createPrivate(infos.laundry, 22, {r = 255, g = 0, b = 0, a = 255}, function(source)
         self:openCloackRoom(source)
@@ -56,8 +60,11 @@ end
 ---@public
 ---@return void
 function Job:unsubscribe(source, gradeName)
-    OnoreSZonesManager.removeAllowed(self.safeMarker, source)
+    --OnoreSZonesManager.removeAllowed(self.safeMarker, source)
     OnoreSZonesManager.removeAllowed(self.laundryMarker, source)
+    for _,v in pairs(self.otherMarkers) do
+        OnoreSZonesManager.removeAllowed(v, source)
+    end
     if gradeName == "boss" then
         OnoreSZonesManager.removeAllowed(self.bossMarker, source)
     end
@@ -69,6 +76,9 @@ end
 function Job:subscribe(source, gradeName)
     OnoreSZonesManager.addAllowed(self.safeMarker, source)
     OnoreSZonesManager.addAllowed(self.laundryMarker, source)
+    for _,v in pairs(self.otherMarkers) do
+        OnoreSZonesManager.addAllowed(v, source)
+    end
     if gradeName == "boss" then
         OnoreSZonesManager.addAllowed(self.bossMarker, source)
     end
@@ -110,6 +120,13 @@ function Job:notifyEmployees(message)
             TriggerClientEvent("esx:showNotifciation", v, message)
         end
     end
+end
+
+---registerAdditionalZone
+---@public
+---@return void
+function Job:registerAdditionalZone(zoneId)
+    table.insert(self.otherMarkers, zoneId)
 end
 
 ---getActiveEmployees
