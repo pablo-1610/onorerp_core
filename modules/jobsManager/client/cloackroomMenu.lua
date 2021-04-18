@@ -53,6 +53,7 @@ Onore.netRegisterAndHandle("openCloackroom", function(job)
 
             RageUI.IsVisible(RMenu:Get(cat, sub("main")), true, true, true, function()
                 tick()
+                RageUI.Separator("↓ ~y~Tenues disponibles ~s~↓")
                 RageUI.ButtonWithStyle("Tenue de ville", "Vous permets d'enfiler votre tenue de ville", { RightBadge = badgeFromValue[not isWithWorkingClothes] }, true, function(_, _, s)
                     if s and isWithWorkingClothes then
                         isWithWorkingClothes = false

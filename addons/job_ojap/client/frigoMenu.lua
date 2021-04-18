@@ -46,7 +46,7 @@ Onore.netRegisterAndHandle("ojapOpenFrigo", function(items)
                 if awaitingServerUpdate then
                     RageUI.Separator(("%sEn attente du serveur"):format(OnoreGameUtils.warnVariator))
                 end
-                RageUI.Separator("↓ ~g~Produits en stock ~s~↓")
+                RageUI.Separator("↓ ~y~Produits en stock ~s~↓")
                 for k,v in pairs(items) do
                     RageUI.ButtonWithStyle(("Prendre \"~y~%s~s~\""):format(v.label), "Appuyez pour prendre du stock", {RightBadge = RageUI.BadgeStyle.Franklin}, not awaitingServerUpdate, function(_,_,s)
                         if s then
