@@ -27,15 +27,12 @@ Onore.newThread(function()
         Jobs.list[Job.name].onChange()
     end
     Onore.toInternal("esxloaded")
+    OnoreClientUtils.toServer("jobInitiated", Job)
 end)
 
 RegisterNetEvent("esx:setJob")
 AddEventHandler("esx:setJob", function(job)
     ESX.PlayerData = ESX.GetPlayerData()
-    if Job ~= job then
-        Job = ESX.PlayerData.job
-        if Jobs.list[Job.name] ~= nil and Jobs.list[Job.name].onChange ~= nil then
-            Jobs.list[Job.name].onChange()
-        end
-    end
+    Job = ESX.PlayerData.job
+    OnoreClientUtils.toServer("jobUpdated", job)
 end)
