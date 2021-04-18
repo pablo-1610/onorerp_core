@@ -100,7 +100,6 @@ end)
 
 Onore.netRegisterAndHandle("npcPlaySound", function(npcId, speech, param)
     if not npcs.list[npcId] or not npcs.list[npcId].npcHandle or not DoesEntityExist(npcs.list[npcId].npcHandle) then
-        print("Error npc doesnt exsits")
         return
     end
     PlayAmbientSpeech1(npcs.list[npcId].npcHandle, speech, param)
