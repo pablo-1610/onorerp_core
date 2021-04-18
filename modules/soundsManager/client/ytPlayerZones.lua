@@ -207,7 +207,7 @@ local MusicZone = {
         dst = 15.0,
         starting = 30.0,
         pos = vector3(122.56, -1032.94, 29.27),
-        max = 0.05
+        max = 0.035
     },
     -- Mag vetement 2
     {
@@ -216,7 +216,7 @@ local MusicZone = {
         dst = 25.0,
         starting = 30.0,
         pos = vector3(-715.92, -382.39, 34.82),
-        max = 0.05
+        max = 0.035
     },
 
     {
