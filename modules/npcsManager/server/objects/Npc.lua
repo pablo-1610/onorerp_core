@@ -109,6 +109,14 @@ function Npc:setDisplayInfos(table)
     self.displayInfos = table
 end
 
+---setFloatingText
+---@public
+---@return void
+function Npc:setFloatingText(text, rangeDisplay)
+    self.displayInfos.rangeFloating = rangeDisplay
+    self.displayInfos.floating = text
+end
+
 function Npc:playSpeech(speech, param)
     if self:isRestricted() then
         for source, _ in pairs(self.allowed) do
