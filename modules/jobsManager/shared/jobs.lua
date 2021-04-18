@@ -18,9 +18,51 @@ OnoreSharedCustomJobs = {
         boss = vector3(-170.63, 305.65, 93.76),
 
         clothes = {
-            ["boss"] = {},
-            ["member"] = {},
-            ["recruit"] = {}
+            ["boss"] = {
+                ["M"] = {
+                    ['tshirt_1'] = 15,  ['tshirt_2'] = 0,
+                    ['torso_1'] = 13,   ['torso_2'] = 0,
+                    ['arms'] = 11,
+                    ['pants_1'] = 24,   ['pants_2'] = 0,
+                    ['shoes_1'] = 10,   ['shoes_2'] = 0,
+                    ['helmet_1'] = 7,  ['helmet_2'] = 2,
+                    ['chain_1'] = 10,    ['chain_2'] = 2,
+                },
+
+                ["F"] = {
+
+                }
+            },
+            ["member"] = {
+                ["M"] = {
+                    ['tshirt_1'] = 15,  ['tshirt_2'] = 0,
+                    ['torso_1'] = 13,   ['torso_2'] = 0,
+                    ['arms'] = 11,
+                    ['pants_1'] = 24,   ['pants_2'] = 0,
+                    ['shoes_1'] = 10,   ['shoes_2'] = 0,
+                    ['helmet_1'] = 7,  ['helmet_2'] = 2,
+                    ['chain_1'] = 10,    ['chain_2'] = 2,
+                },
+
+                ["F"] = {
+
+                }
+            },
+            ["recruit"] = {
+                ["M"] = {
+                    ['tshirt_1'] = 15,  ['tshirt_2'] = 0,
+                    ['torso_1'] = 13,   ['torso_2'] = 0,
+                    ['arms'] = 11,
+                    ['pants_1'] = 24,   ['pants_2'] = 0,
+                    ['shoes_1'] = 10,   ['shoes_2'] = 0,
+                    ['helmet_1'] = 7,  ['helmet_2'] = 2,
+                    ['chain_1'] = 10,    ['chain_2'] = 2,
+                },
+
+                ["F"] = {
+
+                }
+            }
         },
 
         blip = nil

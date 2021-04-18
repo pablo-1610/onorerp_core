@@ -67,10 +67,15 @@ Onore.netHandle("esxloaded", function()
                     if npc.displayInfos.name ~= nil then
                         local rangeDisplay = npc.displayInfos.range
                         if #(pos - npcPos) <= rangeDisplay then
-                            npcs.list[npcId].tag = CreateFakeMpGamerTag(npcs.list[npcId].npcHandle, npc.displayInfos.name, false, false, '', 0)
+                            npcs.list[npcId].tag = CreateFakeMpGamerTag(npcs.list[npcId].npcHandle, npc.displayInfos.name, true, false, 'NPC', 1)
                             SetMpGamerTagColour(npcs.list[npcId].tag, 0, npc.displayInfos.color)
                             SetMpGamerTagVisibility(npcs.list[npcId].tag, 2, true)
-                            SetMpGamerTagHealthBarColour(npcs.list[npcId].tag, 0)
+                            SetMpGamerTagVisibility(npcs.list[npcId].tag, 14, true)
+                            SetMpGamerTagColour(npcs.list[npcId].tag, 2, npc.displayInfos.color)
+                            SetMpGamerTagColour(npcs.list[npcId].tag, 14, npc.displayInfos.color)
+                            SetMpGamerTagAlpha(npcs.list[npcId].tag, 2, 255)
+                            SetMpGamerTagAlpha(npcs.list[npcId].tag, 14, 255)
+                            SetMpGamerTagHealthBarColor(npcs.list[npcId].tag, npc.displayInfos.color)
                         else
                             if npcs.list[npcId].tag ~= nil then
                                 RemoveMpGamerTag(npcs.list[npcId].tag)

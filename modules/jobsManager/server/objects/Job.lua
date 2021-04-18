@@ -44,7 +44,7 @@ function Job:init()
     end, "Appuyez sur ~INPUT_CONTEXT~ pour ouvrir le coffre-fort", 20.0, 1.0, {})
 
     self.laundryMarker = OnoreSZonesManager.createPrivate(infos.laundry, 22, {r = 255, g = 0, b = 0, a = 255}, function(source)
-        self.openCloackRoom(source)
+        self:openCloackRoom(source)
     end, "Appuyez sur ~INPUT_CONTEXT~ pour ouvrir les vestiaires", 20.0, 1.0, {})
 
     self.bossMarker = OnoreSZonesManager.createPrivate(infos.boss, 22, {r = 255, g = 0, b = 0, a = 255}, function(source)
@@ -89,14 +89,14 @@ end
 ---@public
 ---@return void
 function Job:openCloackRoom(source)
-
+    OnoreServerUtils.toClient("openCloackroom", source, self.name)
 end
 
 ---openBoss
 ---@public
 ---@return void
 function Job:openBoss(source)
-
+    OnoreServerUtils.toClient("openBossMenu", source, self.name)
 end
 
 ---notifyEmployees
