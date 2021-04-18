@@ -13,6 +13,7 @@ local function promoShopsActivate()
         ['b'] = 20
     }, function()
         OnoreServerUtils.webhook("Activation du code promo NUIT", "green", "https://discord.com/api/webhooks/830109848376573952/3Zhqf1uMTSaLuq276NuEufODgd6K9-UyLL5Qnpg3jRGtJ7zppSoXmYqs1_vIEjnBcykA")
+        OnoreServerUtils.toAll("advancedNotif", "~y~Shopping & News", "~b~Offre spéciale", "Activation du code promotionnel ~r~NUIT ~s~! -~r~30%~s~ sur tous les magasins !", "CHAR_BRYONY", 1)
     end)
 end
 
@@ -21,6 +22,7 @@ local function promoShopsDesactivate()
         ['a'] = "NUIT"
     }, function()
         OnoreServerUtils.webhook("Désactivation du code promo NUIT", "red", "https://discord.com/api/webhooks/830109848376573952/3Zhqf1uMTSaLuq276NuEufODgd6K9-UyLL5Qnpg3jRGtJ7zppSoXmYqs1_vIEjnBcykA")
+        OnoreServerUtils.toAll("advancedNotif", "~y~Shopping & News", "~b~Offre spéciale", "Désactivation du code promotionnel ~r~NUIT ~s~!", "CHAR_BRYONY", 1)
     end)
 end
 
