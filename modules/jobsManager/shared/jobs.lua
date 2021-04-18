@@ -64,7 +64,5 @@ OnoreSharedCustomJobs = {
                 }
             }
         },
-
-        blip = nil
     }
 }
