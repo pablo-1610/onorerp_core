@@ -24,6 +24,7 @@ OnoreSharedCustomJobs = {
         inventory = vector3(-172.29, 293.83, 93.76),
         laundry = vector3(-172.22, 287.09, 93.76),
         boss = vector3(-170.63, 305.65, 93.76),
+        -- Add garage
 
         clothes = {
             ["boss"] = {
