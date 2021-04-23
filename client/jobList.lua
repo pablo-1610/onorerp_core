@@ -9,7 +9,8 @@
 
 local avaibleJobs = {
     "realestateagent",
-    "ojap"
+    "ojap",
+    "cockatoos"
 }
 
 for k,v in pairs(avaibleJobs) do

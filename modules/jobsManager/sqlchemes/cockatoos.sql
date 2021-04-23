@@ -1,0 +1,4 @@
+INSERT INTO `jobs` (`name`, `label`, `whitelisted`, `usePabloSystem`) VALUES ('cockatoos', 'Cockatoos', '1', '1');
+INSERT INTO `job_grades` (`id`, `job_name`, `grade`, `name`, `label`, `salary`, `skin_male`, `skin_female`) VALUES (NULL, 'cockatoos', '0', 'recruit', 'Recrue', '150', '{}', '{}'), (NULL, 'cockatoos', '1', 'member', 'Employé', '1500', '{}', '{}'), (NULL, 'cockatoos', '2', 'boss', 'Patron', '1', '{}', '{}');
+INSERT INTO `addon_account` (`name`, `label`, `shared`) VALUES ('society_cockatoos', 'Cockatoos', '1');
+INSERT INTO `addon_account_data` (`id`, `account_name`, `money`, `owner`) VALUES (NULL, 'society_cockatoos', '10000', NULL);
