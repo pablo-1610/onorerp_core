@@ -22,8 +22,8 @@ OnoreSharedCustomJobs = {
         end,
 
         inventory = vector3(-172.29, 293.83, 93.76),
-        laundry = vector3(-172.22, 287.09, 93.76),
-        boss = vector3(-170.63, 305.65, 93.76),
+        laundry = vector3(-175.75, 313.03, 97.09),
+        boss = vector3(-175.98, 305.40, 100.02),
         -- Add garage
 
         clothes = {
@@ -84,9 +84,9 @@ OnoreSharedCustomJobs = {
             job:registerAdditionalZone(foodZone)
         end,
 
-        inventory = vector3(0,0,0),
-        laundry = vector3(0,0,0),
-        boss = vector3(0,0,0),
+        inventory = vector3(-437.14, -35.20, 39.97),
+        laundry = vector3(-446.28, -24.79, 39.97),
+        boss = vector3(-441.79, -38.18, 39.97),
         -- Add garage
 
         clothes = {
