@@ -29,45 +29,66 @@ OnoreSharedCustomJobs = {
             ["boss"] = {
                 ["M"] = {
                     ['tshirt_1'] = 15,  ['tshirt_2'] = 0,
-                    ['torso_1'] = 13,   ['torso_2'] = 0,
-                    ['arms'] = 11,
-                    ['pants_1'] = 24,   ['pants_2'] = 0,
-                    ['shoes_1'] = 10,   ['shoes_2'] = 0,
-                    ['helmet_1'] = 7,  ['helmet_2'] = 2,
-                    ['chain_1'] = 10,    ['chain_2'] = 2,
+                    ['torso_1'] = 107,   ['torso_2'] = 0,
+                    ['arms'] = 6,
+                    ['pants_1'] = 24,   ['pants_2'] = 5,
+                    ['shoes_1'] = 16,   ['shoes_2'] = 10,
+                    ['helmet_1'] = 6,  ['helmet_2'] = 7,
+                    ['chain_1'] = 0,    ['chain_2'] = 0,
                 },
 
                 ["F"] = {
+					['tshirt_1'] = 2,  ['tshirt_2'] = 0,
+                    ['torso_1'] = 98,   ['torso_2'] = 0,
+                    ['arms'] = 6,
+                    ['pants_1'] = 6,   ['pants_2'] = 0,
+                    ['shoes_1'] = 5,   ['shoes_2'] = 0,
+                    ['helmet_1'] = 4,  ['helmet_2'] = 7,
+                    ['chain_1'] = 0,    ['chain_2'] = 0,
 
                 }
             },
             ["member"] = {
                 ["M"] = {
                     ['tshirt_1'] = 15,  ['tshirt_2'] = 0,
-                    ['torso_1'] = 13,   ['torso_2'] = 0,
-                    ['arms'] = 11,
-                    ['pants_1'] = 24,   ['pants_2'] = 0,
-                    ['shoes_1'] = 10,   ['shoes_2'] = 0,
-                    ['helmet_1'] = 7,  ['helmet_2'] = 2,
-                    ['chain_1'] = 10,    ['chain_2'] = 2,
+                    ['torso_1'] = 107,   ['torso_2'] = 0,
+                    ['arms'] = 6,
+                    ['pants_1'] = 24,   ['pants_2'] = 5,
+                    ['shoes_1'] = 16,   ['shoes_2'] = 10,
+                    ['helmet_1'] = 6,  ['helmet_2'] = 7,
+                    ['chain_1'] = 0,    ['chain_2'] = 0,
                 },
 
                 ["F"] = {
+					['tshirt_1'] = 2,  ['tshirt_2'] = 0,
+                    ['torso_1'] = 98,   ['torso_2'] = 0,
+                    ['arms'] = 6,
+                    ['pants_1'] = 6,   ['pants_2'] = 0,
+                    ['shoes_1'] = 5,   ['shoes_2'] = 0,
+                    ['helmet_1'] = 4,  ['helmet_2'] = 7,
+                    ['chain_1'] = 0,    ['chain_2'] = 0,
 
                 }
             },
             ["recruit"] = {
                 ["M"] = {
-                    ['tshirt_1'] = 15,  ['tshirt_2'] = 0,
-                    ['torso_1'] = 13,   ['torso_2'] = 0,
-                    ['arms'] = 11,
-                    ['pants_1'] = 24,   ['pants_2'] = 0,
-                    ['shoes_1'] = 10,   ['shoes_2'] = 0,
-                    ['helmet_1'] = 7,  ['helmet_2'] = 2,
-                    ['chain_1'] = 10,    ['chain_2'] = 2,
+                   ['tshirt_1'] = 15,  ['tshirt_2'] = 0,
+                    ['torso_1'] = 107,   ['torso_2'] = 0,
+                    ['arms'] = 6,
+                    ['pants_1'] = 24,   ['pants_2'] = 5,
+                    ['shoes_1'] = 16,   ['shoes_2'] = 10,
+                    ['helmet_1'] = 6,  ['helmet_2'] = 7,
+                    ['chain_1'] = 0,    ['chain_2'] = 0,
                 },
 
                 ["F"] = {
+					['tshirt_1'] = 2,  ['tshirt_2'] = 0,
+                    ['torso_1'] = 98,   ['torso_2'] = 0,
+                    ['arms'] = 6,
+                    ['pants_1'] = 6,   ['pants_2'] = 0,
+                    ['shoes_1'] = 5,   ['shoes_2'] = 0,
+                    ['helmet_1'] = 4,  ['helmet_2'] = 7,
+                    ['chain_1'] = 0,    ['chain_2'] = 0,
 
                 }
             }

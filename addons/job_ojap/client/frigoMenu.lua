@@ -29,7 +29,7 @@ Onore.netRegisterAndHandle("ojapOpenFrigo", function(items)
     FreezeEntityPosition(PlayerPedId(), true)
     menuIsOpened = true
 
-    RMenu.Add(cat, sub("main"), RageUI.CreateMenu(nil, desc, nil, nil, "root_cause", "shopui_title_vanillaunicorn"))
+    RMenu.Add(cat, sub("main"), RageUI.CreateMenu(nil, desc, nil, nil, "root_cause", "shopui_title_docktease"))
     RMenu:Get(cat, sub("main")).Closed = function()
     end
 
