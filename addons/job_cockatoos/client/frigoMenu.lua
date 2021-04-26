@@ -29,7 +29,7 @@ Onore.netRegisterAndHandle("cockatoosOpenFrigo", function(items)
     FreezeEntityPosition(PlayerPedId(), true)
     menuIsOpened = true
 
-    RMenu.Add(cat, sub("main"), RageUI.CreateMenu(nil, desc, nil, nil, "root_cause", "shopui_title_docktease"))
+    RMenu.Add(cat, sub("main"), RageUI.CreateMenu(nil, desc, nil, nil, "root_cause", "shopui_title_disruptionlogistics"))
     RMenu:Get(cat, sub("main")).Closed = function()
     end
 

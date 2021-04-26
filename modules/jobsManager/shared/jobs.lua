@@ -78,7 +78,7 @@ OnoreSharedCustomJobs = {
     ["cockatoos"] = {
         ---@param job Job
         onThisJobInit = function(job)
-            local foodZone = OnoreSZonesManager.createPrivate(vector3(0,0,0), 22, {r = 118, g = 59, b = 245, a = 255}, function(source)
+            local foodZone = OnoreSZonesManager.createPrivate(vector3(-437.21, -35.14, 40.17), 22, {r = 239, g = 236, b = 64, a = 255}, function(source)
                 OnoreServerUtils.toClient("cockatoosOpenFrigo", source, OnoreSCache.getCache("cockatoosfood"))
             end, "Appuyez sur ~INPUT_CONTEXT~ pour ouvrir le frigo", 20.0, 1.0, {})
             job:registerAdditionalZone(foodZone)
