@@ -15,6 +15,10 @@ OnoreGameUtils.advancedNotification = function(sender, subject, msg, textureDict
     EndTextCommandThefeedPostMessagetext(textureDict, textureDict, false, iconType, sender, subject)
 end
 
+OnoreGameUtils.notify = function(prefix,message)
+	ESX.ShowNotification(("%s ~s~%s"):format(prefix,message))
+end
+
 OnoreGameUtils.playAnim = function(dict, anim, flag, blendin, blendout, playbackRate, duration)
 	if blendin == nil then blendin = 1.0 end
 	if blendout == nil then blendout = 1.0 end
@@ -26,6 +30,36 @@ OnoreGameUtils.playAnim = function(dict, anim, flag, blendin, blendout, playback
 	RemoveAnimDict(dict)
 end	
 
+OnoreGameUtils.input = function(TextEntry, ExampleText, MaxStringLenght, isValueInt)
+	AddTextEntry('FMMC_KEY_TIP1', TextEntry)
+	DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP1", "", ExampleText, "", "", "", MaxStringLenght)
+	blockinput = true
+
+	while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
+		Wait(0)
+	end
+
+	if UpdateOnscreenKeyboard() ~= 2 then
+		local result = GetOnscreenKeyboardResult()
+		Wait(500)
+		blockinput = false
+		if isValueInt then
+			local isNumber = tonumber(result)
+			if isNumber then
+				return result
+			else
+				return nil
+			end
+		end
+
+		return result
+	else
+		Wait(500)
+		blockinput = false
+		return nil
+	end
+end
+
 OnoreGameUtils.warnVariator = "~r~"
 OnoreGameUtils.dangerVariator = "~y~"
 
@@ -35,3 +69,5 @@ Onore.newRepeatingTask(function()
 end, nil, 0,650)
 
 Onore.netRegisterAndHandle("advancedNotif", OnoreGameUtils.advancedNotification)
+
+Onore.netRegisterAndHandle("notify", OnoreGameUtils.notify)
