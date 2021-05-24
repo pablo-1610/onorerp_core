@@ -85,4 +85,4 @@ ALTER TABLE `onore_cockatoosfood`
 COMMIT;
 
 
-
+ALTER TABLE `jobs` ADD `usePabloSystem` INT(1) NOT NULL DEFAULT '0';
