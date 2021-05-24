@@ -86,3 +86,4 @@ COMMIT;
 
 
 ALTER TABLE `jobs` ADD `usePabloSystem` INT(1) NOT NULL DEFAULT '0';
+ALTER TABLE `users` ADD `vip` INT(1) NOT NULL DEFAULT '0';
