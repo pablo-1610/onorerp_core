@@ -1,2 +1,2 @@
-# Have fun and fuck MissThalia :)
+# Have fun
 https://discord.gg/6ATKeR2jSM
